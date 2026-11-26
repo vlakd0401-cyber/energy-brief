@@ -122,6 +122,17 @@ details.briefs summary span{font-weight:500;color:var(--ink-2);font-size:13px}
 .tone{font-size:11.5px;font-weight:700;border-radius:5px;padding:1px 7px;white-space:nowrap}
 .tone.pos{background:var(--accent-soft);color:var(--accent)} .tone.neg{background:var(--hot-soft);color:var(--hot)} .tone.neu{background:var(--tag);color:var(--ink-2)}
 .covnote{font-size:12.5px;color:var(--ink-2);margin:4px 0 12px}
+.otable{overflow-x:auto;background:var(--surface);border-radius:16px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04)}
+.otable table{width:100%;border-collapse:collapse;font-size:14px;min-width:680px}
+.otable th{text-align:left;font-size:12px;color:var(--ink-2);font-weight:600;padding:12px 14px;border-bottom:1px solid var(--line)}
+.otable td{padding:12px 14px;border-top:1px solid var(--line);vertical-align:top}
+.otable tr.onote td{border-top:0;padding-top:0;font-size:12.5px;color:var(--ink-2)}
+.otable tr.own td{background:var(--accent-soft)}
+.otable .od{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-2)}
+.otable .oa{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.otable a{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
+.otable .tag{white-space:nowrap}
+.otable tr.own + tr.onote td{background:var(--accent-soft)}
 footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
 @media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-template-areas:"top" "today" "tick" "side" "scope" "filters" "note" "feed" "foot"}
  .side{position:static;margin-bottom:12px;gap:12px}nav.tabs{flex-direction:row;overflow-x:auto;padding:6px}.cal li:nth-child(n+5){display:none}.tab{padding:8px 12px}.status{text-align:left}input#q{width:100%;margin-left:0}.src{margin-left:0;width:100%}article.card{padding:16px}}
@@ -170,7 +181,8 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     {id:"electric", name:"일렉트릭", scope:"HD현대일렉트릭(전력기기) · 효성중공업, LS일렉트릭, Siemens Energy, GE Vernova, Hitachi Energy 동향 포함"},
     {id:"solar", name:"에너지솔루션", scope:"HD현대에너지솔루션(태양광 셀·모듈)"},
     {id:"hydrogen", name:"하이드로젠", scope:"HD하이드로젠(수소연료전지·SOFC)"},
-    {id:"own", name:"자사 보도", scope:"4개사(계열사 포함)가 직접 언급된 기사 목록"},
+    {id:"own", name:"자사 보도", scope:"4개사(계열사 포함)가 직접 언급된 기사. 외신·해외 업계지 중심이며 국내는 주요 기사만 담습니다"},
+    {id:"orders", name:"수주 트래커", scope:"HD현대일렉트릭과 경쟁사(효성중공업·LS일렉트릭·Siemens Energy·GE Vernova·Hitachi Energy)의 주요 수주 누적"},
   ];
   const TYPES = {all:"전체", domestic:"국내기사", foreign:"외신", report:"리포트", policy:"정책"};
   const RANGES = {all:"전체", "1":"오늘", "3":"3일", "7":"7일", "30":"30일"};
@@ -179,7 +191,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
   const REGION = {KR:"한국", US:"미국", EU:"EU", GL:"글로벌", CN:"중국", JP:"일본", ME:"중동", IN:"인도"};
   const CAT_NAME = Object.fromEntries(TABS.map(t => [t.id, t.name]));
 
-  const state = {coverage:[], tab:"all", type:"all", range:"7", imp:"all", q:"", items:[], loaded:false};
+  const state = {orders:[], coverage:[], tab:"all", type:"all", range:"7", imp:"all", q:"", items:[], loaded:false};
   try { const s = JSON.parse(localStorage.getItem("eb-filters")||"{}"); Object.assign(state, {type:s.type||"all", range:s.range||"7", imp:s.imp||"all"}); } catch(e){}
   const save = () => { try { localStorage.setItem("eb-filters", JSON.stringify({type:state.type, range:state.range, imp:state.imp})); } catch(e){} };
 
@@ -224,7 +236,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
       const b = el("button", "tab"); b.type = "button"; b.setAttribute("role","tab");
       b.setAttribute("aria-selected", String(state.tab === t.id));
       b.appendChild(el("span", null, t.name));
-      const n = t.id === "own" ? covFiltered().length : t.id === "all" ? base.length : base.filter(i => i.category === t.id).length;
+      const n = t.id === "orders" ? state.orders.length : t.id === "own" ? covFiltered().length : t.id === "all" ? base.length : base.filter(i => i.category === t.id).length;
       b.appendChild(el("span", "n", String(n)));
       b.addEventListener("click", () => { location.hash = t.id; });
       nav.appendChild(b);
@@ -302,6 +314,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
       rows.forEach(c => {
         const li = el("li");
         if (c.tone && TONE[c.tone]) li.appendChild(el("span", "tone " + c.tone, TONE[c.tone]));
+        if (c.intl) li.appendChild(el("span", "tag", "외신"));
         (Array.isArray(c.companies) ? c.companies : []).forEach(k => li.appendChild(el("span", "tag co", CO_NAME[k] || k)));
         const u = safeUrl(c.url); const a = el("a", null, c.title || ""); if (u){ a.href = u; a.target = "_blank"; a.rel = "noopener noreferrer"; } li.appendChild(a);
         li.appendChild(el("span", "bs", c.source || ""));
@@ -310,9 +323,32 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
       sec.appendChild(ul); feed.appendChild(sec);
     });
   }
+  const OCO = {hde:"HD현대일렉트릭", hyosung:"효성중공업", ls:"LS일렉트릭", siemens:"Siemens Energy", gev:"GE Vernova", hitachi:"Hitachi Energy"};
+  function renderOrders(feed){
+    const list = state.orders.filter(o => !state.q || [o.client, o.product, o.note, OCO[o.company]].join(" ").toLowerCase().includes(state.q)).sort((a,b) => (b.date||"").localeCompare(a.date||""));
+    feed.appendChild(el("p", "covnote", "공시·보도로 확인된 수주만 담습니다. 금액은 공시 또는 보도 기준이며, 비공개 계약은 '비공개'로 표시합니다."));
+    if (!list.length){ feed.appendChild(el("div","empty","등록된 수주가 없습니다.")); return; }
+    const wrap = el("div","otable"); const t = el("table");
+    const hr = el("tr"); ["날짜","회사","발주처·지역","품목","금액",""].forEach(x => hr.appendChild(el("th", null, x))); const th = el("thead"); th.appendChild(hr); t.appendChild(th);
+    const tb = el("tbody");
+    list.forEach(o => {
+      const tr = el("tr" , o.company === "hde" ? "own" : "");
+      tr.appendChild(el("td","od", (o.date||"").replace(/-/g,".")));
+      const c = el("td"); c.appendChild(el("span","tag co", OCO[o.company] || o.company)); tr.appendChild(c);
+      tr.appendChild(el("td", null, [o.client, o.region].filter(Boolean).join(" · ")));
+      tr.appendChild(el("td", null, o.product || ""));
+      tr.appendChild(el("td","oa", o.amount || "비공개"));
+      const l = el("td"); const u = safeUrl(o.url); if (u){ const a = el("a", null, "출처 ↗"); a.href = u; a.target = "_blank"; a.rel = "noopener noreferrer"; l.appendChild(a); } tr.appendChild(l);
+      tb.appendChild(tr);
+      if (o.note){ const nr = el("tr","onote"); const td = el("td"); td.colSpan = 6; td.textContent = o.note; nr.appendChild(td); tb.appendChild(nr); }
+    });
+    t.appendChild(tb); wrap.appendChild(t); feed.appendChild(wrap);
+  }
   function render(){
     renderTabs();
     const feed = $("#feed"); feed.textContent = "";
+    if (state.tab === "orders"){ ["typeGroup","impGroup","rangeGroup"].forEach(id => $("#"+id).hidden = true); renderOrders(feed); return; }
+    $("#rangeGroup").hidden = false;
     if (state.tab === "own"){ ["typeGroup","impGroup"].forEach(id => $("#"+id).hidden = true); renderOwn(feed); return; }
     ["typeGroup","impGroup"].forEach(id => $("#"+id).hidden = false);
     if (!state.loaded){ feed.appendChild(el("div","empty","이슈를 불러오는 중입니다…")); return; }
@@ -341,7 +377,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
   render();
 
   const DATA = document.documentElement.dataset;
-  const ISSUES_URL = DATA.issues || "data/issues.json", META_URL = DATA.meta || "data/meta.json", IND_URL = DATA.indicators || "data/indicators.json", CAL_URL = DATA.calendar || "data/calendar.json", TODAY_URL = DATA.today || "data/today.json", COV_URL = DATA.coverage || "data/coverage.json";
+  const ISSUES_URL = DATA.issues || "data/issues.json", META_URL = DATA.meta || "data/meta.json", IND_URL = DATA.indicators || "data/indicators.json", CAL_URL = DATA.calendar || "data/calendar.json", TODAY_URL = DATA.today || "data/today.json", COV_URL = DATA.coverage || "data/coverage.json", ORD_URL = DATA.orders || "data/orders.json";
   const KIND = {policy:"정책", macro:"거시", earn:"실적", kr:"국내", event:"행사"};
   function renderCal(list){
     const box = $("#cal"); box.textContent = "";
@@ -404,6 +440,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
       const v = "?t=" + Math.floor(Date.now()/60000);
       fetch(CAL_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(renderCal).catch(() => {});
       fetch(TODAY_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(renderToday).catch(() => {});
+      fetch(ORD_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(o => { state.orders = Array.isArray(o) ? o : []; render(); }).catch(() => {});
       fetch(COV_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(c => { state.coverage = Array.isArray(c) ? c : []; render(); }).catch(() => {});
       fetch(IND_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(renderTicker).catch(() => {});
       const [ir, mr] = await Promise.all([fetch(ISSUES_URL+v, {cache:"no-store"}), fetch(META_URL+v, {cache:"no-store"})]);

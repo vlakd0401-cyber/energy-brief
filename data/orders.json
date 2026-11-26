@@ -1,0 +1,57 @@
+[
+ {
+  "date": "2026-11-03",
+  "company": "gev",
+  "client": "Power Grid(인도 국영 송전사)",
+  "region": "인도",
+  "product": "6,000MW ±800kV HVDC LCC 변환소(Barmer II–South Kalamb)",
+  "amount": "",
+  "note": "GE Vernova T&D India가 낙찰 통보서(LoA) 수령, 본계약은 추후 체결",
+  "source": "Electrical Mirror",
+  "url": "https://electricalmirror.net/ge-vernova-td-india-receives-powergrid-award-for-6000-mw-hvdc-transmission-project/"
+ },
+ {
+  "date": "2026-10-01",
+  "company": "ls",
+  "client": "美 하이퍼스케일 데이터센터 프로젝트",
+  "region": "미국",
+  "product": "초고압 변압기",
+  "amount": "1,812억원",
+  "note": "미국 자회사 LS ELECTRIC AMERICA 수주, 계약기간 2026.9.30~2030.1.30(최근 매출액 대비 3.65%)",
+  "source": "스페셜타임스(공시)",
+  "url": "https://www.specialtimes.co.kr/news/articleView.html?idxno=469279"
+ },
+ {
+  "date": "2026-09-15",
+  "company": "hyosung",
+  "client": "美 빅테크 2곳(AI 데이터센터)",
+  "region": "미국",
+  "product": "765kV·345kV 초고압 변압기",
+  "amount": "3,865억원",
+  "note": "765kV 2,200억원 + 345kV 1,665억원, 9월 한 달간 체결",
+  "source": "디일렉",
+  "url": "https://www.thelec.kr/news/articleView.html?idxno=62283"
+ },
+ {
+  "date": "2026-05-07",
+  "company": "hde",
+  "client": "美 중부 대형 유틸리티",
+  "region": "미국",
+  "product": "765kV 초고압 변압기·리액터",
+  "amount": "1,730억원",
+  "note": "미국 법인을 통한 공급계약",
+  "source": "딜사이트(공시)",
+  "url": "https://dealsite.co.kr/articles/161393/103125"
+ },
+ {
+  "date": "2026-01-06",
+  "company": "hde",
+  "client": "HD Hyundai Electric America(미국 프로젝트)",
+  "region": "미국",
+  "product": "765kV 초고압 변압기",
+  "amount": "983억원",
+  "note": "최근 매출액 대비 2.96%",
+  "source": "한국경제(공시)",
+  "url": "https://www.hankyung.com/article/202601063480L"
+ }
+]

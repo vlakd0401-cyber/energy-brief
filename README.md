@@ -41,3 +41,8 @@ HD현대 에너지부문 4개사(오일뱅크·H&L어드밴스드, 일렉트릭,
 
 ## 일정 (`data/calendar.json`)
 `[{date, time, kind: policy|macro|earn|kr|event, title, note}]` — 한국시간, 지난 일정은 화면에서 자동으로 숨김
+
+## 수주 트래커 (`data/orders.json`)
+`[{date, company: hde|hyosung|ls|siemens|gev|hitachi, client, region, product, amount, note, source, url}]`
+
+자사 보도 항목에는 `intl`(해외 매체 여부, true/false)을 함께 씁니다.
