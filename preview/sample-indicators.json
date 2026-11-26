@@ -1,0 +1,141 @@
+{
+ "sample": true,
+ "asOf": "2026-11-26 09:00 (KST)",
+ "items": [
+  {
+   "group": "공통",
+   "label": "원/달러",
+   "value": "1,468.2",
+   "unit": "원",
+   "change": "3.1원",
+   "dir": "down",
+   "source": "서울외환시장"
+  },
+  {
+   "group": "공통",
+   "label": "한국 기준금리",
+   "value": "2.50",
+   "unit": "%",
+   "change": "동결",
+   "dir": "flat",
+   "source": "한국은행"
+  },
+  {
+   "group": "공통",
+   "label": "美 기준금리",
+   "value": "3.75~4.00",
+   "unit": "%",
+   "change": "동결",
+   "dir": "flat",
+   "source": "Fed"
+  },
+  {
+   "group": "공통",
+   "label": "美 국채 10년",
+   "value": "4.12",
+   "unit": "%",
+   "change": "0.03%p",
+   "dir": "up",
+   "source": "Treasury"
+  },
+  {
+   "group": "공통",
+   "label": "국고채 3년",
+   "value": "2.71",
+   "unit": "%",
+   "change": "0.02%p",
+   "dir": "down",
+   "source": "금융투자협회"
+  },
+  {
+   "group": "정유·화학",
+   "label": "브렌트",
+   "value": "94.61",
+   "unit": "$/bbl",
+   "change": "3.5%",
+   "dir": "up",
+   "source": "ICE"
+  },
+  {
+   "group": "정유·화학",
+   "label": "두바이",
+   "value": "92.10",
+   "unit": "$/bbl",
+   "change": "2.8%",
+   "dir": "up",
+   "source": "한국석유공사"
+  },
+  {
+   "group": "정유·화학",
+   "label": "싱가포르 정제마진",
+   "value": "12.4",
+   "unit": "$/bbl",
+   "change": "0.6",
+   "dir": "down",
+   "source": "업계 추정"
+  },
+  {
+   "group": "정유·화학",
+   "label": "에틸렌 스프레드",
+   "value": "245",
+   "unit": "$/t",
+   "change": "12",
+   "dir": "up",
+   "source": "업계 추정"
+  },
+  {
+   "group": "전력기기",
+   "label": "LME 구리",
+   "value": "10,850",
+   "unit": "$/t",
+   "change": "1.2%",
+   "dir": "up",
+   "source": "LME"
+  },
+  {
+   "group": "전력기기",
+   "label": "LME 알루미늄",
+   "value": "2,610",
+   "unit": "$/t",
+   "change": "0.4%",
+   "dir": "down",
+   "source": "LME"
+  },
+  {
+   "group": "태양광",
+   "label": "폴리실리콘",
+   "value": "6.3",
+   "unit": "$/kg",
+   "change": "보합",
+   "dir": "flat",
+   "source": "InfoLink"
+  },
+  {
+   "group": "태양광",
+   "label": "TOPCon 모듈",
+   "value": "0.105",
+   "unit": "$/W",
+   "change": "0.9%",
+   "dir": "down",
+   "source": "InfoLink"
+  },
+  {
+   "group": "태양광",
+   "label": "REC(육지)",
+   "value": "71,500",
+   "unit": "원",
+   "change": "1.4%",
+   "dir": "up",
+   "source": "전력거래소"
+  },
+  {
+   "group": "수소·전력",
+   "label": "SMP(육지)",
+   "value": "118.4",
+   "unit": "원/kWh",
+   "change": "2.1%",
+   "dir": "down",
+   "source": "전력거래소"
+  }
+ ]
+}

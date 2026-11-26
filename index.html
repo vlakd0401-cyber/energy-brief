@@ -26,7 +26,7 @@ ul.sum{margin:8px 0 0;padding-left:18px} ul.sum li{margin:2px 0}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
 body{background:var(--bg);color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.75;letter-spacing:-.003em;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;display:grid;grid-template-columns:220px minmax(0,1fr);column-gap:32px;grid-template-areas:"top top" "tabs scope" "tabs filters" "tabs note" "tabs feed" "tabs foot"}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;display:grid;grid-template-columns:220px minmax(0,1fr);column-gap:32px;grid-template-areas:"top top" "tick tick" "tabs scope" "tabs filters" "tabs note" "tabs feed" "tabs foot"}
 header.top{grid-area:top;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px}
 .eyebrow{font-size:13px;color:var(--accent);font-weight:600}
 h1{margin:2px 0 0;font-size:26px;font-weight:800;letter-spacing:-.02em}
@@ -63,8 +63,29 @@ ul.sum li::marker{color:var(--ink-2)}
 .imp b{color:var(--accent);margin-right:8px}
 .links{margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;font-size:13px}
 .links a{color:var(--accent);font-weight:600;background:var(--accent-soft);padding:5px 10px;border-radius:8px}
+.ticker{grid-area:tick;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 18px 16px;margin-bottom:24px;min-width:0}
+.tk-head{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.tk-title{font-size:14px;font-weight:700} .tk-asof{font-size:12px;color:var(--ink-2)}
+.tk-sample{font-size:12px;font-weight:700;color:var(--mid);background:var(--mid-soft);border-radius:6px;padding:2px 8px}
+.tk-groups{display:flex;flex-wrap:wrap;gap:16px 36px}
+.tk-group{flex:0 1 auto;min-width:0}
+.tk-glabel{font-size:11.5px;font-weight:700;color:var(--accent);margin-bottom:6px;letter-spacing:.02em}
+.tk-items{display:flex;flex-wrap:wrap;gap:10px 22px}
+.tk-item{min-width:96px} .tk-label{font-size:12px;color:var(--ink-2);white-space:nowrap}
+.tk-value{font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;letter-spacing:-.01em}
+.tk-unit{font-size:12px;font-weight:500;color:var(--ink-2);margin-left:2px}
+.tk-chg{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tk-chg.up{color:var(--hot)} .tk-chg.down{color:var(--accent)} .tk-chg.flat{color:var(--ink-2)}
+.tk-src{font-size:11.5px;color:var(--ink-2);margin-top:10px}
+@media (max-width:600px){.tk-groups{flex-wrap:nowrap;overflow-x:auto;gap:0 28px;padding-bottom:6px;scrollbar-width:thin}.tk-group{flex:0 0 auto}.tk-items{flex-wrap:nowrap;gap:18px}.tk-item{min-width:84px}.tk-src{font-size:11px}}
+details.more{margin-top:14px;border-top:1px dashed var(--line);padding-top:10px}
+details.more summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--accent);list-style:none;display:inline-flex;gap:6px;align-items:center}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:"▸";transition:transform .15s} details.more[open] summary::before{transform:rotate(90deg)}
+details.more ul{margin:10px 0 0;padding-left:20px;font-size:15.5px;line-height:1.85} details.more li{margin:5px 0}
+details.more .vf{font-size:12px;color:var(--ink-2);margin:8px 0 0}
 footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
-@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"top" "tabs" "scope" "filters" "note" "feed" "foot"}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"top" "tick" "tabs" "scope" "filters" "note" "feed" "foot"}
  nav.tabs{flex-direction:row;overflow-x:auto;position:static;padding:6px;margin-bottom:12px}.tab{padding:8px 12px}.status{text-align:left}input#q{width:100%;margin-left:0}.src{margin-left:0;width:100%}article.card{padding:16px}}
 </style>
 </head>
@@ -78,6 +99,8 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     </div>
     <div class="status" id="status">업데이트 <b>평일 08:00 · 15:00</b><br><span id="last">불러오는 중…</span></div>
   </header>
+
+  <section class="ticker" id="ticker" hidden aria-label="주요 지표"></section>
 
   <nav class="tabs" role="tablist" id="tabs"></nav>
   <p class="scope" id="scope"></p>
@@ -190,6 +213,12 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     if (impact){
       const p = el("p", "imp"); p.appendChild(el("b", null, "영향 포인트")); p.appendChild(document.createTextNode(impact)); b.appendChild(p);
     }
+    if (Array.isArray(it.detail) && it.detail.length){
+      const d = el("details", "more"); d.appendChild(el("summary", null, "자세히 보기"));
+      const ul = el("ul"); it.detail.forEach(x => ul.appendChild(el("li", null, String(x)))); d.appendChild(ul);
+      if (it.verified) d.appendChild(el("p", "vf", "원문 확인 후 작성"));
+      b.appendChild(d);
+    }
     const links = el("div", "links");
     const u = safeUrl(it.url);
     if (u){ const l = el("a", null, "원문 보기 ↗"); l.href = u; l.target = "_blank"; l.rel = "noopener noreferrer"; links.appendChild(l); }
@@ -219,11 +248,42 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
   }
   render();
 
+  const DATA = document.documentElement.dataset;
+  const ISSUES_URL = DATA.issues || "data/issues.json", META_URL = DATA.meta || "data/meta.json", IND_URL = DATA.indicators || "data/indicators.json";
+  function renderTicker(ind){
+    const box = $("#ticker"); box.textContent = "";
+    const items = ind && Array.isArray(ind.items) ? ind.items : [];
+    if (!items.length){ box.hidden = true; return; }
+    const head = el("div","tk-head"); const left = el("div"); left.style.display="flex"; left.style.gap="8px"; left.style.alignItems="baseline";
+    left.appendChild(el("span","tk-title","주요 지표"));
+    if (ind.sample) left.appendChild(el("span","tk-sample","예시 수치 · 실제 값 아님"));
+    head.appendChild(left); head.appendChild(el("span","tk-asof", ind.asOf ? "기준 " + ind.asOf : "")); box.appendChild(head);
+    const groups = el("div","tk-groups"); const order = []; const map = {};
+    items.forEach(it => { const g = it.group || "기타"; if (!map[g]){ map[g] = []; order.push(g); } map[g].push(it); });
+    order.forEach(g => {
+      const gd = el("div","tk-group"); gd.appendChild(el("div","tk-glabel", g)); const row = el("div","tk-items");
+      map[g].forEach(it => {
+        const c = el("div","tk-item"); c.title = [it.asOf && ("기준 " + it.asOf), it.source && ("출처 " + it.source)].filter(Boolean).join(" · ");
+        c.appendChild(el("div","tk-label", it.label || ""));
+        const v = el("div","tk-value", it.value != null ? String(it.value) : "–"); if (it.unit) v.appendChild(el("span","tk-unit", it.unit)); c.appendChild(v);
+        const dir = it.dir === "up" ? "up" : it.dir === "down" ? "down" : "flat";
+        c.appendChild(el("div","tk-chg " + dir, (dir === "up" ? "▲ " : dir === "down" ? "▼ " : "– ") + (it.change || "보합")));
+        row.appendChild(c);
+      });
+      gd.appendChild(row); groups.appendChild(gd);
+    });
+    box.appendChild(groups);
+    const srcs = [...new Set(items.map(i => i.source).filter(Boolean))];
+    if (srcs.length) box.appendChild(el("div","tk-src", "출처: " + srcs.join(", ") + " · 변동은 직전 거래일 대비 · 하루 두 번 갱신되는 참고용 수치"));
+    box.hidden = false;
+  }
+
   (async () => {
     const note = $("#note");
     try {
       const v = "?t=" + Math.floor(Date.now()/60000);
-      const [ir, mr] = await Promise.all([fetch("data/issues.json"+v, {cache:"no-store"}), fetch("data/meta.json"+v, {cache:"no-store"})]);
+      fetch(IND_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(renderTicker).catch(() => {});
+      const [ir, mr] = await Promise.all([fetch(ISSUES_URL+v, {cache:"no-store"}), fetch(META_URL+v, {cache:"no-store"})]);
       if (!ir.ok) throw new Error("HTTP " + ir.status);
       const items = await ir.json();
       state.items = Array.isArray(items) ? items : [];
