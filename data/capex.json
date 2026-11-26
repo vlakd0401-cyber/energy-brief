@@ -1,5 +1,31 @@
 [
  {
+  "date": "2026-11-26",
+  "company": "hyosung",
+  "sector": "electric",
+  "kind": "증설",
+  "site": "中 장쑤성 난퉁 변압기 공장 3기",
+  "capacity": "초고압변압기 연간 생산능력 440대로 확대(3기 완공 시), 750kV 변압기·±800kV 변환용 변압기 대응",
+  "amount": "$150M",
+  "status": "발표",
+  "note": "11/25 하이안시와 증설 협약(난퉁시 정부 공개 자료). 납기 10~14개월→8~10개월 단축 전망. 공시 확인 전 보도 기준",
+  "source": "샛경제(보도)",
+  "url": "https://sateconomy.co.kr/news/view/1065587153974138"
+ },
+ {
+  "date": "2026-11-25",
+  "company": "soil",
+  "sector": "oil",
+  "kind": "신설",
+  "site": "울산 석유화학 2단계(샤힌 프로젝트)",
+  "capacity": "TC2C 기술 기반 스팀크래커·폴리머, 석유화학 제품 연 약 320만t",
+  "amount": "9조2,580억원",
+  "status": "완공",
+  "note": "11/25 준공식, 2027년 상업 가동 예정. 금액은 공시 기준(기사는 약 70억달러로 보도)",
+  "source": "투데이에너지(준공식)",
+  "url": "https://www.todayenergy.kr/news/articleView.html?idxno=306089"
+ },
+ {
   "date": "2026-11-16",
   "company": "soil",
   "sector": "oil",
