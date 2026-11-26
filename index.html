@@ -479,7 +479,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     });
     box.appendChild(groups);
     const srcs = [...new Set(items.map(i => i.source).filter(Boolean))];
-    if (srcs.length) box.appendChild(el("div","tk-src", "출처: " + srcs.join(", ") + " · 각 수치 아래 날짜는 기준일, 변동은 직전 발표 대비 · 하루 두 번 갱신되는 참고용 수치"));
+    if (srcs.length) box.appendChild(el("div","tk-src", "출처: " + srcs.join(", ") + " · 각 수치 아래 날짜는 기준일, 변동은 직전 발표 대비 · 정제마진(추정)·크랙은 한국석유공사 페트로넷 싱가포르 제품가격과 오피넷 Dubai로 자체 계산(수율 가정에 따라 증권사 수치와 다를 수 있음)"));
     box.hidden = false;
   }
 

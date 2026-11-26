@@ -74,22 +74,42 @@
   {
    "group": "정유·화학",
    "label": "두바이",
-   "value": "82.60",
+   "value": "84.19",
    "unit": "$/bbl",
-   "change": "5.1%",
-   "dir": "down",
-   "asOf": "11/24",
-   "source": "한국석유공사"
+   "change": "1.9%",
+   "dir": "up",
+   "asOf": "11/25",
+   "source": "한국석유공사(오피넷)"
   },
   {
    "group": "정유·화학",
-   "label": "싱가포르 정제마진",
-   "value": "–",
-   "unit": "",
-   "change": "최신치 집계 대기",
-   "dir": "flat",
-   "asOf": "",
-   "source": ""
+   "label": "싱가포르 정제마진(추정)",
+   "value": "20.40",
+   "unit": "$/bbl",
+   "change": "2.61",
+   "dir": "down",
+   "asOf": "11/25",
+   "source": "페트로넷·오피넷 자체 계산"
+  },
+  {
+   "group": "정유·화학",
+   "label": "경유 크랙",
+   "value": "47.94",
+   "unit": "$/bbl",
+   "change": "3.63",
+   "dir": "down",
+   "asOf": "11/25",
+   "source": "페트로넷·오피넷 자체 계산"
+  },
+  {
+   "group": "정유·화학",
+   "label": "휘발유 크랙",
+   "value": "4.12",
+   "unit": "$/bbl",
+   "change": "2.34",
+   "dir": "down",
+   "asOf": "11/25",
+   "source": "페트로넷·오피넷 자체 계산"
   },
   {
    "group": "정유·화학",
