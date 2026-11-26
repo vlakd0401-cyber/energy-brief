@@ -11,7 +11,7 @@
 | 18시 | 오늘 15시 회차 이후. 장 마감 후 공시, 유럽 오전 발표 포함 |
 
 ## 저장소 준비
-- 사이트는 GitHub 저장소 vlakd0401-cyber/energy-brief 의 main 브랜치에 푸시하면 Cloudflare가 자동으로 사이트를 다시 배포합니다. 데이터 파일만 고칩니다: data/issues.json(이슈 배열), data/indicators.json(주요 지표), data/meta.json(갱신 시각). index.html은 수정하지 마세요.
+- 사이트는 GitHub 저장소 vlakd0401-cyber/energy-brief 의 main 브랜치에 푸시하면 Cloudflare가 자동으로 사이트를 다시 배포합니다. 데이터 파일만 고칩니다: data/issues.json(이슈·단신), data/coverage.json(자사 보도), data/today.json(오늘의 핵심), data/calendar.json(일정), data/indicators.json(주요 지표), data/meta.json(갱신 시각). index.html은 수정하지 마세요.
 - 작업 디렉터리에 이 저장소 체크아웃이 없으면 add_repo 도구(owner "vlakd0401-cyber", repo "energy-brief", access "push")를 호출하고, 그 결과가 안내하는 대로 한 번만 clone 하세요. 이미 있으면 `git pull --rebase origin main`으로 최신화하세요.
 - 저장소의 README.md에 항목 형식이 있습니다.
 
@@ -35,6 +35,10 @@
    - source: 매체명. url: 실제로 확인한 https:// 주소만. extraLinks(선택): [{"label":"...","url":"https://..."}]. addedAt: 현재 시각 ISO8601(+09:00).
    - 핵심(importance 3) 이슈는 반드시 원문을 확인합니다: WebFetch(또는 web-fetch 에이전트)로 원문 URL을 엽니다. 네트워크 정책으로 열리지 않으면(ENOTFOUND, 403 등) 같은 사안을 다룬 기사를 2곳 이상 WebSearch로 교차 확인합니다. 원문을 실제로 읽었으면 verified: true, 검색 발췌로만 확인했으면 verified: false.
    - 핵심 이슈에는 detail(4~6개 문자열 배열)을 추가합니다: 배경, 세부 수치, 주요 발언·근거, 일정·향후 절차 등 summary에 없는 내용. 확인한 사실만 씁니다.
+4-1. 단신: 카드로 다루기엔 작지만 알아둘 만한 기사(업계 동향, 경쟁사 소식, 가격 지표 기사, 주가 급변 등)는 단신으로 넣습니다. 형식은 id, date, category, title(한국어, 외신은 번역), source, url, type, region, importance: 1, brief: true, addedAt만 씁니다(summary·impact 불필요). 분량: 탭당 하루 최대 15건(한 회차에 탭당 0~5건). 카드로 쓴 사안과 같은 기사는 단신으로 중복하지 않습니다.
+4-2. 자사 보도: 4개사(HD현대오일뱅크와 계열사, H&L어드밴스드, HD현대일렉트릭, HD현대에너지솔루션, HD하이드로젠) 또는 HD현대 그룹의 에너지 사업이 제목이나 본문 핵심에 직접 언급된 기사를 data/coverage.json 배열에 추가합니다. 형식: {"date","companies":[oilbank|hl|electric|solar|hydrogen|group 중 해당 키],"tone":"pos|neu|neg","title","source","url"}. 논조 기준: pos=수주·실적 개선·신용도 상향·호평 등 긍정 사실이 중심, neg=손실·사고·제재·소송·비판·하향 등 부정 사실이 중심, neu=그 외(시황 언급, 단순 소개, 긍·부정 혼재). 같은 url은 중복하지 않고, 외신에 언급된 경우 title은 번역하고 source에 매체명을 씁니다. date 내림차순으로 정렬하고, 90일이 지난 항목은 삭제합니다.
+4-3. 오늘의 핵심: data/today.json을 {"updated":"MM/DD HH:MM 기준","items":[{"category","text"} 3개]}로 다시 씁니다. 최근 24시간 안에 실린 카드 중 가장 중요한 3건을 골라 text는 40자 안팎 한 문장으로 씁니다. 새 이슈가 없으면 그대로 둡니다.
+4-4. 일정: data/calendar.json에서 지난 일정은 지우고 앞으로 6주 안의 주요 일정을 추가·확인합니다. 대상: 정책 시행일·입찰 마감·의견 제출 마감·공청회, OPEC+ 회의, FOMC·한국은행 금통위, 美 CPI 등 주요 지표, 한국 수출입 동향, 4개사·주요 경쟁사 실적 발표, 주요 전시회. 형식: {"date":"YYYY-MM-DD"(한국시간),"time":"HH:MM" 또는 "","kind":"policy|macro|earn|kr|event","title","note"}. 공식 발표가 아닌 날짜는 note에 "예상 일정"이라고 씁니다.
 5. 쓰기: Python 등으로 새 항목을 배열에 추가하고, date 내림차순(같으면 importance 내림차순)으로 정렬해 data/issues.json을 "한 줄에 한 항목" 형식(기존 파일과 같은 형식, ensure_ascii=False)으로 다시 씁니다. 저장 후 JSON이 올바르게 파싱되는지 반드시 확인합니다.
 5-1. 주요 지표 갱신: data/indicators.json의 각 항목(group·label·unit은 그대로)을 WebSearch로 최신값으로 고칩니다. value(천 단위 쉼표 문자열), change(변동폭 또는 '동결'·'보합' 등), dir(up|down|flat), asOf(그 수치의 기준일, 예 "11/27" 또는 "11월 4주 평균"), source를 채우고 최상위 asOf에 수집 시각("YYYY-MM-DD HH:MM (KST)")을 씁니다. 대상: 원/달러, 한국 기준금리, 美 기준금리, 美 국채 10년, 국고채 3년, 브렌트, WTI, 두바이, 싱가포르 정제마진, NCC 스프레드(아시아), LME 구리(3M), LME 알루미늄(3M), 폴리실리콘(n형, InfoLink), TOPCon 모듈(中 외, InfoLink), REC(육지), SMP(육지). 신뢰할 만한 최신값을 못 찾으면 그 항목은 직전 값과 asOf를 그대로 둡니다(추정치로 채우지 않음). 출처끼리 값이 다르면 공식 기관·거래소 값을 우선합니다. 저장 후 JSON 파싱을 확인합니다.
 6. data/meta.json을 {"lastUpdated":"YYYY-MM-DD (요일) HH:MM · HH시 회차 N건 추가","lastRun":"ISO시각"}로 갱신합니다. 새 이슈가 0건이어도 갱신합니다.

@@ -29,3 +29,15 @@ HD현대 에너지부문 4개사(오일뱅크·H&L어드밴스드, 일렉트릭,
 `{"asOf": "수집 시각", "items": [{group, label, value, unit, change, dir, asOf, source}]}`
 - `dir`: `up` · `down` · `flat` (오르면 빨강 ▲, 내리면 파랑 ▼)
 - `asOf`: 그 수치의 기준일(예: `11/25`, `11월 3주 평균`). 값을 못 찾으면 직전 값과 기준일을 그대로 둡니다.
+
+## 단신
+`issues.json` 항목 중 `brief: true`인 것. id·date·category·title·source·url·type·region·importance(1)·addedAt만 사용.
+
+## 자사 보도 (`data/coverage.json`)
+`[{date, companies: [oilbank|hl|electric|solar|hydrogen|group], tone: pos|neu|neg, title, source, url}]`
+
+## 오늘의 핵심 (`data/today.json`)
+`{"updated": "MM/DD HH:MM 기준", "items": [{category, text}] (3개)}`
+
+## 일정 (`data/calendar.json`)
+`[{date, time, kind: policy|macro|earn|kr|event, title, note}]` — 한국시간, 지난 일정은 화면에서 자동으로 숨김

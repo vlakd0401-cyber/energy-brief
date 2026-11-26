@@ -26,13 +26,14 @@ ul.sum{margin:8px 0 0;padding-left:18px} ul.sum li{margin:2px 0}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
 body{background:var(--bg);color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.75;letter-spacing:-.003em;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;display:grid;grid-template-columns:220px minmax(0,1fr);column-gap:32px;grid-template-areas:"top top" "tick tick" "tabs scope" "tabs filters" "tabs note" "tabs feed" "tabs foot"}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px;display:grid;grid-template-columns:220px minmax(0,1fr);column-gap:32px;grid-template-areas:"top top" "today today" "tick tick" "side scope" "side filters" "side note" "side feed" "side foot";grid-template-rows:repeat(7,auto) 1fr}
 header.top{grid-area:top;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px}
 .eyebrow{font-size:13px;color:var(--accent);font-weight:600}
 h1{margin:2px 0 0;font-size:26px;font-weight:800;letter-spacing:-.02em}
 .status{font-size:13px;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 14px;text-align:right}
 .status b{color:var(--ink)}
-nav.tabs{grid-area:tabs;display:flex;flex-direction:column;gap:4px;align-self:start;position:sticky;top:16px;background:var(--surface);border-radius:16px;padding:10px;border:1px solid var(--line)}
+.side{grid-area:side;display:flex;flex-direction:column;gap:16px;align-self:start;position:sticky;top:16px;min-width:0}
+nav.tabs{display:flex;flex-direction:column;gap:4px;background:var(--surface);border-radius:16px;padding:10px;border:1px solid var(--line)}
 .tab{color:var(--ink-2);font-weight:600;font-size:15px;padding:11px 12px;border-radius:10px;justify-content:space-between}
 .tab:hover{background:var(--tag);color:var(--ink)}
 .tab[aria-selected="true"]{background:var(--accent-soft);color:var(--accent)}
@@ -85,9 +86,45 @@ details.more summary::-webkit-details-marker{display:none}
 details.more summary::before{content:"▸";transition:transform .15s} details.more[open] summary::before{transform:rotate(90deg)}
 details.more ul{margin:10px 0 0;padding-left:20px;font-size:15.5px;line-height:1.85} details.more li{margin:5px 0}
 details.more .vf{font-size:12px;color:var(--ink-2);margin:8px 0 0}
+.cal{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 14px 10px}
+.cal h2{font-size:14px;font-weight:700;margin:0 0 8px;display:flex;justify-content:space-between;align-items:baseline}
+.cal h2 small{font-size:11.5px;font-weight:500;color:var(--ink-2)}
+.cal ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.cal li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;padding:8px 0;border-top:1px solid var(--line)}
+.cal li:first-child{border-top:0}
+.cal .dd{font-size:12px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.3}
+.cal .dd.today{color:var(--hot)} .cal .dd small{display:block;font-weight:500;color:var(--ink-2)}
+.cal .ev{font-size:13.5px;font-weight:600;line-height:1.4}
+.cal .ev .k{display:inline-block;font-size:11px;font-weight:700;border-radius:4px;padding:0 5px;margin-right:4px;vertical-align:1px}
+.cal .k.macro{background:var(--accent-soft);color:var(--accent)} .cal .k.earn{background:var(--hot-soft);color:var(--hot)} .cal .k.kr{background:var(--mid-soft);color:var(--mid)}
+.cal .tm{font-size:11.5px;color:var(--ink-2);font-weight:400}
+.cal .empty2{font-size:13px;color:var(--ink-2);padding:6px 0}
+.today{grid-area:today;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin-bottom:16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 18px;align-items:start}
+.today h2{margin:0;font-size:14px;font-weight:800;color:var(--accent);white-space:nowrap;padding-top:2px}
+.today h2 small{display:block;font-size:11.5px;font-weight:500;color:var(--ink-2);margin-top:2px}
+.today ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font-size:15.5px;font-weight:600;line-height:1.55}
+.today ol li::marker{color:var(--accent);font-weight:800}
+.today .tc{font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:5px;padding:1px 6px;margin-right:6px;vertical-align:1px}
+@media (max-width:600px){.today{grid-template-columns:1fr}}
+.pill.new{background:var(--accent);color:#fff}
+details.briefs{margin-top:12px;background:var(--surface);border-radius:14px;border:1px solid var(--line);padding:12px 18px}
+details.briefs summary{cursor:pointer;font-size:14px;font-weight:700;list-style:none;display:flex;gap:8px;align-items:center}
+details.briefs summary::-webkit-details-marker{display:none}
+details.briefs summary::before{content:"▸";color:var(--ink-2);transition:transform .15s} details.briefs[open] summary::before{transform:rotate(90deg)}
+details.briefs summary span{font-weight:500;color:var(--ink-2);font-size:13px}
+.blist{list-style:none;margin:8px 0 0;padding:0}
+.blist li{display:flex;gap:8px;align-items:baseline;padding:8px 0;border-top:1px solid var(--line);font-size:14.5px;line-height:1.5;flex-wrap:wrap}
+.blist li:first-child{border-top:0}
+.blist a{color:var(--ink);text-decoration:none;font-weight:500;flex:1 1 260px;min-width:0} .blist a:hover{color:var(--accent);text-decoration:underline}
+.blist .bs{font-size:12px;color:var(--ink-2);white-space:nowrap}
+.cov{background:var(--surface);border-radius:16px;padding:6px 22px 10px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04)}
+.cov li{padding:12px 0}
+.tone{font-size:11.5px;font-weight:700;border-radius:5px;padding:1px 7px;white-space:nowrap}
+.tone.pos{background:var(--accent-soft);color:var(--accent)} .tone.neg{background:var(--hot-soft);color:var(--hot)} .tone.neu{background:var(--tag);color:var(--ink-2)}
+.covnote{font-size:12.5px;color:var(--ink-2);margin:4px 0 12px}
 footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
-@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"top" "tick" "tabs" "scope" "filters" "note" "feed" "foot"}
- nav.tabs{flex-direction:row;overflow-x:auto;position:static;padding:6px;margin-bottom:12px}.tab{padding:8px 12px}.status{text-align:left}input#q{width:100%;margin-left:0}.src{margin-left:0;width:100%}article.card{padding:16px}}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-template-areas:"top" "today" "tick" "side" "scope" "filters" "note" "feed" "foot"}
+ .side{position:static;margin-bottom:12px;gap:12px}nav.tabs{flex-direction:row;overflow-x:auto;padding:6px}.cal li:nth-child(n+5){display:none}.tab{padding:8px 12px}.status{text-align:left}input#q{width:100%;margin-left:0}.src{margin-left:0;width:100%}article.card{padding:16px}}
 </style>
 </head>
 <body>
@@ -101,9 +138,14 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     <div class="status" id="status">업데이트 <b>평일 08:00 · 11:00 · 15:00 · 18:00</b><br><span id="last">불러오는 중…</span></div>
   </header>
 
+  <section class="today" id="today" hidden aria-label="오늘의 핵심"></section>
+
   <section class="ticker" id="ticker" hidden aria-label="주요 지표"></section>
 
-  <nav class="tabs" role="tablist" id="tabs"></nav>
+  <div class="side">
+    <nav class="tabs" role="tablist" id="tabs"></nav>
+    <section class="cal" id="cal" hidden aria-label="다가오는 일정"></section>
+  </div>
   <p class="scope" id="scope"></p>
 
   <div class="filters">
@@ -128,6 +170,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     {id:"electric", name:"일렉트릭", scope:"HD현대일렉트릭(전력기기) · 효성중공업, LS일렉트릭, Siemens Energy, GE Vernova, Hitachi Energy 동향 포함"},
     {id:"solar", name:"에너지솔루션", scope:"HD현대에너지솔루션(태양광 셀·모듈)"},
     {id:"hydrogen", name:"하이드로젠", scope:"HD하이드로젠(수소연료전지·SOFC)"},
+    {id:"own", name:"자사 보도", scope:"4개사(계열사 포함)가 직접 언급된 기사 목록"},
   ];
   const TYPES = {all:"전체", domestic:"국내기사", foreign:"외신", report:"리포트", policy:"정책"};
   const RANGES = {all:"전체", "1":"오늘", "3":"3일", "7":"7일", "30":"30일"};
@@ -136,7 +179,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
   const REGION = {KR:"한국", US:"미국", EU:"EU", GL:"글로벌", CN:"중국", JP:"일본", ME:"중동", IN:"인도"};
   const CAT_NAME = Object.fromEntries(TABS.map(t => [t.id, t.name]));
 
-  const state = {tab:"all", type:"all", range:"7", imp:"all", q:"", items:[], loaded:false};
+  const state = {coverage:[], tab:"all", type:"all", range:"7", imp:"all", q:"", items:[], loaded:false};
   try { const s = JSON.parse(localStorage.getItem("eb-filters")||"{}"); Object.assign(state, {type:s.type||"all", range:s.range||"7", imp:s.imp||"all"}); } catch(e){}
   const save = () => { try { localStorage.setItem("eb-filters", JSON.stringify({type:state.type, range:state.range, imp:state.imp})); } catch(e){} };
 
@@ -181,24 +224,29 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
       const b = el("button", "tab"); b.type = "button"; b.setAttribute("role","tab");
       b.setAttribute("aria-selected", String(state.tab === t.id));
       b.appendChild(el("span", null, t.name));
-      const n = t.id === "all" ? base.length : base.filter(i => i.category === t.id).length;
+      const n = t.id === "own" ? covFiltered().length : t.id === "all" ? base.length : base.filter(i => i.category === t.id).length;
       b.appendChild(el("span", "n", String(n)));
       b.addEventListener("click", () => { location.hash = t.id; });
       nav.appendChild(b);
     });
     $("#scope").textContent = TABS.find(t => t.id === state.tab).scope;
     document.querySelectorAll(".chip").forEach(c => {
-      const key = c.parentElement.id === "typeGroup" ? "type" : c.parentElement.id === "rangeGroup" ? "range" : "imp";
+      const key = {typeGroup:"type", rangeGroup:"range", impGroup:"imp"}[c.parentElement.id];
       c.setAttribute("aria-pressed", String(state[key] === c.dataset.k));
     });
   }
 
+  let LAST_SEEN = "";
+  try { LAST_SEEN = localStorage.getItem("eb-lastseen") || ""; } catch(e){}
+  if (document.documentElement.dataset.lastseen) LAST_SEEN = document.documentElement.dataset.lastseen;
+  const isNew = it => !!(LAST_SEEN && it.addedAt && it.addedAt > LAST_SEEN);
   function card(it){
     const imp = Number(it.importance) || 1;
     const a = el("article", `card i${imp}`);
     a.appendChild(el("div", "sev"));
     const b = el("div", "body");
     const m = el("div", "meta");
+    if (isNew(it)) m.appendChild(el("span", "pill new", "NEW"));
     m.appendChild(el("span", `pill i${imp}`, IMP_LABEL[imp] || "참고"));
     m.appendChild(el("span", "tag", TYPES[it.type] || it.type || ""));
     if (it.region) m.appendChild(el("span", "tag", REGION[it.region] || it.region));
@@ -229,9 +277,44 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     return a;
   }
 
+  const CO_NAME = {oilbank:"오일뱅크", hl:"H&L어드밴스드", electric:"일렉트릭", solar:"에너지솔루션", hydrogen:"하이드로젠", group:"HD현대"};
+  const TONE = {pos:"긍정", neu:"중립", neg:"부정"};
+  function covFiltered(){
+    const from = state.range === "all" ? "" : daysAgo(state.range);
+    return state.coverage.filter(c => (!from || (c.date||"") >= from) && (!state.q || [c.title, c.source].join(" ").toLowerCase().includes(state.q)));
+  }
+  function briefRow(it, withDate){
+    const li = el("li");
+    if (isNew(it)) li.appendChild(el("span", "pill new", "NEW"));
+    if (state.tab === "all" && it.category) li.appendChild(el("span", "tag co", CAT_NAME[it.category] || it.category));
+    const u = safeUrl(it.url); const a = el("a", null, it.title || ""); if (u){ a.href = u; a.target = "_blank"; a.rel = "noopener noreferrer"; } li.appendChild(a);
+    li.appendChild(el("span", "bs", [it.source, withDate ? it.date : ""].filter(Boolean).join(" · ")));
+    return li;
+  }
+  function renderOwn(feed){
+    const list = covFiltered().sort((a,b) => (b.date||"").localeCompare(a.date||""));
+    feed.appendChild(el("p", "covnote", "언론 보도에 4개사가 직접 언급된 기사입니다. 논조는 기사 내용을 기준으로 한 참고용 분류입니다."));
+    if (!list.length){ feed.appendChild(el("div","empty","선택한 기간에 수집된 자사 보도가 없습니다.")); return; }
+    const byDay = new Map(); list.forEach(c => { if (!byDay.has(c.date)) byDay.set(c.date, []); byDay.get(c.date).push(c); });
+    byDay.forEach((rows, d) => {
+      const sec = el("section","day"); const h = el("h2"); h.appendChild(el("span","d", fmtDay(d))); h.appendChild(el("span","c", rows.length + "건")); sec.appendChild(h);
+      const ul = el("ul","blist cov");
+      rows.forEach(c => {
+        const li = el("li");
+        if (c.tone && TONE[c.tone]) li.appendChild(el("span", "tone " + c.tone, TONE[c.tone]));
+        (Array.isArray(c.companies) ? c.companies : []).forEach(k => li.appendChild(el("span", "tag co", CO_NAME[k] || k)));
+        const u = safeUrl(c.url); const a = el("a", null, c.title || ""); if (u){ a.href = u; a.target = "_blank"; a.rel = "noopener noreferrer"; } li.appendChild(a);
+        li.appendChild(el("span", "bs", c.source || ""));
+        ul.appendChild(li);
+      });
+      sec.appendChild(ul); feed.appendChild(sec);
+    });
+  }
   function render(){
     renderTabs();
     const feed = $("#feed"); feed.textContent = "";
+    if (state.tab === "own"){ ["typeGroup","impGroup"].forEach(id => $("#"+id).hidden = true); renderOwn(feed); return; }
+    ["typeGroup","impGroup"].forEach(id => $("#"+id).hidden = false);
     if (!state.loaded){ feed.appendChild(el("div","empty","이슈를 불러오는 중입니다…")); return; }
     if (!state.items.length){ feed.appendChild(el("div","empty","아직 수집된 이슈가 없습니다. 정해진 갱신 시각에 새 이슈가 자동으로 추가됩니다.")); return; }
     const list = filtered(false).sort((x,y) => (y.date||"").localeCompare(x.date||"") || (Number(y.importance)||0)-(Number(x.importance)||0) || (y.addedAt||"").localeCompare(x.addedAt||""));
@@ -243,14 +326,49 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     const byDay = new Map(); list.forEach(it => { const d = it.date || "날짜 미상"; if (!byDay.has(d)) byDay.set(d, []); byDay.get(d).push(it); });
     byDay.forEach((items, d) => {
       const sec = el("section","day"); const h = el("h2");
-      h.appendChild(el("span","d", d.length === 10 ? fmtDay(d) : d)); h.appendChild(el("span","c", `${items.length}건`));
-      sec.appendChild(h); const l = el("div","list"); items.forEach(it => l.appendChild(card(it))); sec.appendChild(l); feed.appendChild(sec);
+      h.appendChild(el("span","d", d.length === 10 ? fmtDay(d) : d)); h.appendChild(el("span","c", `${items.filter(i=>!i.brief).length}건` + (items.some(i=>i.brief) ? ` · 단신 ${items.filter(i=>i.brief).length}건` : "")));
+      const cards = items.filter(it => !it.brief), briefs = items.filter(it => it.brief);
+      sec.appendChild(h);
+      if (cards.length){ const l = el("div","list"); cards.forEach(it => l.appendChild(card(it))); sec.appendChild(l); }
+      if (briefs.length){
+        const dt = el("details","briefs"); if (!cards.length) dt.open = true;
+        const sm = el("summary", null, "단신"); sm.appendChild(el("span", null, briefs.length + "건 · 제목만 모아 보기")); dt.appendChild(sm);
+        const ul = el("ul","blist"); briefs.forEach(it => ul.appendChild(briefRow(it, false))); dt.appendChild(ul); sec.appendChild(dt);
+      }
+      feed.appendChild(sec);
     });
   }
   render();
 
   const DATA = document.documentElement.dataset;
-  const ISSUES_URL = DATA.issues || "data/issues.json", META_URL = DATA.meta || "data/meta.json", IND_URL = DATA.indicators || "data/indicators.json";
+  const ISSUES_URL = DATA.issues || "data/issues.json", META_URL = DATA.meta || "data/meta.json", IND_URL = DATA.indicators || "data/indicators.json", CAL_URL = DATA.calendar || "data/calendar.json", TODAY_URL = DATA.today || "data/today.json", COV_URL = DATA.coverage || "data/coverage.json";
+  const KIND = {policy:"정책", macro:"거시", earn:"실적", kr:"국내", event:"행사"};
+  function renderCal(list){
+    const box = $("#cal"); box.textContent = "";
+    const today = todayKST();
+    const up = (Array.isArray(list) ? list : []).filter(e => (e.date||"") >= today).sort((a,b) => (a.date+(a.time||"")).localeCompare(b.date+(b.time||""))).slice(0, 10);
+    if (!up.length){ box.hidden = true; return; }
+    const h = el("h2"); h.appendChild(el("span", null, "다가오는 일정")); h.appendChild(el("small", null, "한국시간")); box.appendChild(h);
+    const ul = el("ul");
+    up.forEach(e => {
+      const li = el("li");
+      const diff = Math.round((new Date(e.date+"T00:00:00Z") - new Date(today+"T00:00:00Z"))/864e5);
+      const dd = el("div", "dd" + (diff === 0 ? " today" : ""), e.date.slice(5).replace("-", "."));
+      dd.appendChild(el("small", null, diff === 0 ? "오늘" : "D-" + diff)); li.appendChild(dd);
+      const ev = el("div", "ev"); ev.appendChild(el("span", "k " + (e.kind === "earn" ? "earn" : e.kind === "kr" || e.kind === "policy" ? "kr" : "macro"), KIND[e.kind] || "일정")); ev.appendChild(document.createTextNode(e.title || ""));
+      const tm = [e.time, e.note].filter(Boolean).join(" · "); if (tm){ ev.appendChild(document.createElement("br")); ev.appendChild(el("span", "tm", tm)); }
+      li.appendChild(ev); ul.appendChild(li);
+    });
+    box.appendChild(ul); box.hidden = false;
+  }
+  function renderToday(t){
+    const box = $("#today"); box.textContent = "";
+    if (!t || !Array.isArray(t.items) || !t.items.length){ box.hidden = true; return; }
+    const h = el("h2", null, "오늘의 핵심"); h.appendChild(el("small", null, t.updated || "")); box.appendChild(h);
+    const ol = el("ol");
+    t.items.slice(0,3).forEach(x => { const li = el("li"); if (x.category) li.appendChild(el("span","tc", CAT_NAME[x.category] || x.category)); li.appendChild(document.createTextNode(x.text || "")); ol.appendChild(li); });
+    box.appendChild(ol); box.hidden = false;
+  }
   function renderTicker(ind){
     const box = $("#ticker"); box.textContent = "";
     const items = ind && Array.isArray(ind.items) ? ind.items : [];
@@ -284,6 +402,9 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     const note = $("#note");
     try {
       const v = "?t=" + Math.floor(Date.now()/60000);
+      fetch(CAL_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(renderCal).catch(() => {});
+      fetch(TODAY_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(renderToday).catch(() => {});
+      fetch(COV_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(c => { state.coverage = Array.isArray(c) ? c : []; render(); }).catch(() => {});
       fetch(IND_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(renderTicker).catch(() => {});
       const [ir, mr] = await Promise.all([fetch(ISSUES_URL+v, {cache:"no-store"}), fetch(META_URL+v, {cache:"no-store"})]);
       if (!ir.ok) throw new Error("HTTP " + ir.status);
@@ -295,6 +416,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
       $("#last").textContent = "";
     }
     state.loaded = true; render();
+    setTimeout(() => { try { localStorage.setItem("eb-lastseen", new Date(Date.now()+9*3600e3).toISOString().slice(0,19) + "+09:00"); } catch(e){} }, 4000);
   })();
 })();
 </script>
