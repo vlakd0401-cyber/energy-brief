@@ -1,23 +1,24 @@
 {
- "sample": true,
- "asOf": "2026-11-26 09:00 (KST)",
+ "asOf": "2026-11-26 13:00 (KST)",
  "items": [
   {
    "group": "공통",
    "label": "원/달러",
-   "value": "1,468.2",
+   "value": "1,343.6",
    "unit": "원",
-   "change": "3.1원",
+   "change": "3.0원",
    "dir": "down",
-   "source": "서울외환시장"
+   "asOf": "11/25 고시",
+   "source": "한국수출입은행"
   },
   {
    "group": "공통",
    "label": "한국 기준금리",
-   "value": "2.50",
+   "value": "3.25",
    "unit": "%",
-   "change": "동결",
-   "dir": "flat",
+   "change": "0.25%p 인상",
+   "dir": "up",
+   "asOf": "11/26",
    "source": "한국은행"
   },
   {
@@ -27,25 +28,28 @@
    "unit": "%",
    "change": "동결",
    "dir": "flat",
+   "asOf": "10/28 FOMC",
    "source": "Fed"
   },
   {
    "group": "공통",
    "label": "美 국채 10년",
-   "value": "4.12",
+   "value": "4.85",
    "unit": "%",
-   "change": "0.03%p",
-   "dir": "up",
-   "source": "Treasury"
+   "change": "0.08%p",
+   "dir": "down",
+   "asOf": "11/25",
+   "source": "美 국채시장(뉴욕 마감)"
   },
   {
    "group": "공통",
    "label": "국고채 3년",
-   "value": "2.71",
+   "value": "3.583",
    "unit": "%",
-   "change": "0.02%p",
+   "change": "0.057%p",
    "dir": "down",
-   "source": "금융투자협회"
+   "asOf": "11/25",
+   "source": "서울 채권시장"
   },
   {
    "group": "정유·화학",
@@ -54,87 +58,97 @@
    "unit": "$/bbl",
    "change": "3.5%",
    "dir": "up",
+   "asOf": "11/25",
    "source": "ICE"
   },
   {
    "group": "정유·화학",
    "label": "두바이",
-   "value": "92.10",
+   "value": "82.60",
    "unit": "$/bbl",
-   "change": "2.8%",
-   "dir": "up",
+   "change": "5.1%",
+   "dir": "down",
+   "asOf": "11/24",
    "source": "한국석유공사"
   },
   {
    "group": "정유·화학",
    "label": "싱가포르 정제마진",
-   "value": "12.4",
-   "unit": "$/bbl",
-   "change": "0.6",
-   "dir": "down",
-   "source": "업계 추정"
+   "value": "–",
+   "unit": "",
+   "change": "최신치 집계 대기",
+   "dir": "flat",
+   "asOf": "",
+   "source": ""
   },
   {
    "group": "정유·화학",
-   "label": "에틸렌 스프레드",
-   "value": "245",
+   "label": "NCC 스프레드(아시아)",
+   "value": "337",
    "unit": "$/t",
-   "change": "12",
+   "change": "3Q 평균 대비 65%",
    "dir": "up",
-   "source": "업계 추정"
+   "asOf": "11월 중순",
+   "source": "업계(유안타증권 등)"
   },
   {
    "group": "전력기기",
-   "label": "LME 구리",
-   "value": "10,850",
+   "label": "LME 구리(3M)",
+   "value": "11,826",
    "unit": "$/t",
-   "change": "1.2%",
-   "dir": "up",
+   "change": "5.3%",
+   "dir": "down",
+   "asOf": "11/24",
    "source": "LME"
   },
   {
    "group": "전력기기",
-   "label": "LME 알루미늄",
-   "value": "2,610",
+   "label": "LME 알루미늄(3M)",
+   "value": "2,769",
    "unit": "$/t",
-   "change": "0.4%",
+   "change": "3.1%",
    "dir": "down",
+   "asOf": "11/24",
    "source": "LME"
   },
   {
    "group": "태양광",
-   "label": "폴리실리콘",
-   "value": "6.3",
-   "unit": "$/kg",
+   "label": "폴리실리콘(n형)",
+   "value": "42~43",
+   "unit": "위안/kg",
    "change": "보합",
    "dir": "flat",
+   "asOf": "11/11",
    "source": "InfoLink"
   },
   {
    "group": "태양광",
-   "label": "TOPCon 모듈",
-   "value": "0.105",
+   "label": "TOPCon 모듈(中 외)",
+   "value": "0.114",
    "unit": "$/W",
-   "change": "0.9%",
-   "dir": "down",
+   "change": "보합",
+   "dir": "flat",
+   "asOf": "11/11",
    "source": "InfoLink"
   },
   {
    "group": "태양광",
    "label": "REC(육지)",
-   "value": "71,500",
+   "value": "71,050",
    "unit": "원",
-   "change": "1.4%",
-   "dir": "up",
+   "change": "50원",
+   "dir": "down",
+   "asOf": "11월 3주 평균",
    "source": "전력거래소"
   },
   {
    "group": "수소·전력",
    "label": "SMP(육지)",
-   "value": "118.4",
+   "value": "131.4",
    "unit": "원/kWh",
-   "change": "2.1%",
+   "change": "0.5원",
    "dir": "down",
+   "asOf": "11월 3주 평균",
    "source": "전력거래소"
   }
  ]
