@@ -22,3 +22,10 @@ HD현대 에너지부문 4개사(오일뱅크·H&L어드밴스드, 일렉트릭,
 | impact | 영향 포인트 (객관적·중립적 서술) |
 | source / url / extraLinks | 출처, 원문 https 링크, 추가 링크 `[{label,url}]` |
 | addedAt | 추가 시각 ISO8601 |
+| detail | (핵심 이슈만) '자세히 보기' 상세 요약, 4~6개 문장 배열 |
+| verified | 원문을 직접 열어 읽고 썼으면 true, 검색 결과 발췌 기반이면 false |
+
+## 주요 지표 (`data/indicators.json`)
+`{"asOf": "수집 시각", "items": [{group, label, value, unit, change, dir, asOf, source}]}`
+- `dir`: `up` · `down` · `flat` (오르면 빨강 ▲, 내리면 파랑 ▼)
+- `asOf`: 그 수치의 기준일(예: `11/25`, `11월 3주 평균`). 값을 못 찾으면 직전 값과 기준일을 그대로 둡니다.
