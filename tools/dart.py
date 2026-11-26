@@ -36,19 +36,55 @@ def text(b):
     t = re.sub(r"[ \t\xa0]+", " ", t)
     return re.sub(r"\n\s*\n+", "\n", t).strip()
 
+ALIASES = {"HD현대오일뱅크": "에이치디현대오일뱅크", "LS ELECTRIC": "엘에스일렉트릭", "LS일렉트릭": "엘에스일렉트릭",
+           "S-OIL": "S-Oil", "에쓰오일": "S-Oil", "에쓰-오일": "S-Oil", "H&L어드밴스드": "에이치앤엘어드밴스드"}
+PREFIX = [("HD", "에이치디"), ("LS", "엘에스"), ("SK", "에스케이"), ("GS", "지에스"), ("LG", "엘지"), ("OCI", "오씨아이"), ("H&L", "에이치앤엘")]
+
+def name_variants(corp):
+    """사명이 검색되지 않을 때 시도할 이름 후보(영문↔국문 표기, 띄어쓰기 제거 등)"""
+    out = [corp]
+    if corp in ALIASES:
+        out.append(ALIASES[corp])
+    for en, ko in PREFIX:
+        if corp.upper().startswith(en):
+            out.append(ko + corp[len(en):].strip())
+        if corp.startswith(ko):
+            out.append(en + corp[len(ko):])
+    out += [corp.replace(" ", ""), "(주)" + corp]
+    seen = []
+    for v in out:
+        if v and v not in seen:
+            seen.append(v)
+    return seen
+
 def list_reports(corp, name="", start="20250101"):
+    for v in name_variants(corp):
+        rows = _list(v, name, start)
+        # 결과의 회사명이 검색어와 맞는지 확인(예: 'LS ELECTRIC' 검색이 지주사 'LS'로 잡히는 경우 제외)
+        ok = [r for r in rows if r[1].split(" | ")[0].split()[-1].replace(" ", "") in (v.replace(" ", ""),) or v.replace(" ", "") in r[1].replace(" ", "")]
+        if ok:
+            if v != corp:
+                print(f"# '{corp}' 대신 '{v}'(으)로 찾았습니다")
+            for r in ok:
+                print(r[0], r[1])
+            return
+    print(f"# '{corp}' 공시를 찾지 못했습니다. 시도한 이름: {', '.join(name_variants(corp))}")
+
+def _list(corp, name="", start="20250101"):
     data = {"currentPage": 1, "maxResults": 100, "maxLinks": 10, "sort": "date", "series": "desc",
             "option": "corp", "textCrpNm": corp, "textCrpCik": "", "reportName": "",
             "startDate": start, "endDate": date.today().strftime("%Y%m%d"),
             "finalReport": "recent", "businessCode": "all", "autoSearch": "N"}
     h = curl("https://dart.fss.or.kr/dsab007/detailSearch.ax", data).decode("utf-8", errors="ignore")
+    rows = []
     for tr in re.findall(r"<tr>(.*?)</tr>", h, re.S):
         rc = re.search(r"rcpNo=(\d{14})", tr)
         if rc:
             cells = [html.unescape(re.sub(r"<[^>]+>|\s+", " ", c)).strip() for c in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)]
             line = " | ".join(c for c in cells[1:5] if c)
             if not name or name in line:
-                print(rc.group(1), line)
+                rows.append((rc.group(1), line))
+    return rows
 
 def nodes(rcp):
     h = curl(f"https://dart.fss.or.kr/dsaf001/main.do?rcpNo={rcp}").decode("utf-8", errors="ignore")
