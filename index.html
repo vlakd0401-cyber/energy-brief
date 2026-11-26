@@ -189,7 +189,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     {id:"solar", name:"에너지솔루션", scope:"HD현대에너지솔루션(태양광 셀·모듈)"},
     {id:"hydrogen", name:"하이드로젠", scope:"HD하이드로젠(수소연료전지·SOFC)"},
     {id:"own", name:"자사 보도", scope:"4개사(계열사 포함)가 직접 언급된 기사. 외신·해외 업계지 중심이며 국내는 주요 기사만 담습니다"},
-    {id:"orders", name:"수주·증설", scope:"HD현대일렉트릭과 경쟁사(효성중공업·LS일렉트릭·Siemens Energy·GE Vernova·Hitachi Energy)의 수주와 생산능력 증설 누적"},
+    {id:"orders", name:"수주·증설", scope:"수주: HD현대일렉트릭과 경쟁사(효성·LS·Siemens Energy·GE Vernova·Hitachi Energy) / 증설: 4개사와 업종별 경쟁사의 생산능력 증설·감축"},
   ];
   const TYPES = {all:"전체", domestic:"국내기사", foreign:"외신", report:"리포트", policy:"정책"};
   const RANGES = {all:"전체", "1":"오늘", "3":"3일", "7":"7일", "30":"30일"};
@@ -198,7 +198,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
   const REGION = {KR:"한국", US:"미국", EU:"EU", GL:"글로벌", CN:"중국", JP:"일본", ME:"중동", IN:"인도"};
   const CAT_NAME = Object.fromEntries(TABS.map(t => [t.id, t.name]));
 
-  const state = {sub:"orders", capex:[], orders:[], coverage:[], tab:"all", type:"all", range:"7", imp:"all", q:"", items:[], loaded:false};
+  const state = {csec:"all", sub:"orders", capex:[], orders:[], coverage:[], tab:"all", type:"all", range:"7", imp:"all", q:"", items:[], loaded:false};
   try { const s = JSON.parse(localStorage.getItem("eb-filters")||"{}"); Object.assign(state, {type:s.type||"all", range:s.range||"7", imp:s.imp||"all"}); } catch(e){}
   const save = () => { try { localStorage.setItem("eb-filters", JSON.stringify({type:state.type, range:state.range, imp:state.imp})); } catch(e){} };
 
@@ -332,7 +332,9 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
       sec.appendChild(ul); feed.appendChild(sec);
     });
   }
-  const OCO = {hde:"HD현대일렉트릭", hyosung:"효성중공업", ls:"LS일렉트릭", siemens:"Siemens Energy", gev:"GE Vernova", hitachi:"Hitachi Energy"};
+  const OCO = {hde:"HD현대일렉트릭", hyosung:"효성중공업", ls:"LS일렉트릭", siemens:"Siemens Energy", gev:"GE Vernova", hitachi:"Hitachi Energy", oilbank:"HD현대오일뱅크", hl:"H&L어드밴스드", soil:"S-OIL", sk:"SK이노베이션", gs:"GS칼텍스", lotte:"롯데케미칼", lgchem:"LG화학", hdes:"HD현대에너지솔루션", hanwha:"한화솔루션(큐셀)", oci:"OCI", hdh:"HD하이드로젠", doosan:"두산퓨얼셀", bloom:"Bloom Energy"};
+  const OWN = ["hde","oilbank","hl","hdes","hdh"];
+  const SEC = {all:"전체", oil:"정유·화학", electric:"전력기기", solar:"태양광", hydrogen:"수소"};
   function subSwitch(feed){
     const sw = el("div","subsw");
     [["orders","수주 "+state.orders.length],["capex","증설 "+state.capex.length]].forEach(([k,label]) => {
@@ -342,14 +344,21 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     feed.appendChild(sw);
   }
   function renderCapex(feed){
-    const list = state.capex.filter(o => !state.q || [o.site, o.capacity, o.note, OCO[o.company]].join(" ").toLowerCase().includes(state.q)).sort((a,b) => (b.date||"").localeCompare(a.date||""));
-    feed.appendChild(el("p", "covnote", "생산능력 증설·신설·현지화 투자를 발표·착공·완공 시점별로 담습니다. 금액은 발표 기준입니다."));
+    const chips = el("div","group"); chips.style.marginBottom = "12px";
+    Object.entries(SEC).forEach(([k,v]) => {
+      const n = k === "all" ? state.capex.length : state.capex.filter(o => (o.sector||"electric") === k).length;
+      const b = el("button","chip", v + " " + n); b.type = "button"; b.setAttribute("aria-pressed", String(state.csec === k));
+      b.addEventListener("click", () => { state.csec = k; render(); }); chips.appendChild(b);
+    });
+    feed.appendChild(chips);
+    const list = state.capex.filter(o => state.csec === "all" || (o.sector||"electric") === state.csec).filter(o => !state.q || [o.site, o.capacity, o.note, OCO[o.company]].join(" ").toLowerCase().includes(state.q)).sort((a,b) => (b.date||"").localeCompare(a.date||""));
+    feed.appendChild(el("p", "covnote", "4개사와 업종별 경쟁사의 증설·신설·감축을 발표·착공·완공 단계별로 담습니다. 금액은 국내사는 DART 공시(분기·사업보고서 투자계획), 해외사는 회사 공식 자료 기준입니다. 파란 줄은 HD현대 계열사입니다."));
     if (!list.length){ feed.appendChild(el("div","empty","등록된 증설 소식이 없습니다.")); return; }
     const wrap = el("div","otable"); const t = el("table");
     const hr = el("tr"); ["날짜","회사","구분","지역·공장","규모·내용","투자액",""].forEach(x => hr.appendChild(el("th", null, x))); const th = el("thead"); th.appendChild(hr); t.appendChild(th);
     const tb = el("tbody");
     list.forEach(o => {
-      const tr = el("tr", o.company === "hde" ? "own" : "");
+      const tr = el("tr", OWN.includes(o.company) ? "own" : "");
       tr.appendChild(el("td","od", (o.date||"").replace(/-/g,".")));
       const c = el("td"); c.appendChild(el("span","tag co", OCO[o.company] || o.company)); tr.appendChild(c);
       const k = el("td"); k.appendChild(el("span","kind", o.kind || "증설")); tr.appendChild(k);

@@ -1,5 +1,57 @@
 [
  {
+  "date": "2026-11-16",
+  "company": "soil",
+  "sector": "oil",
+  "kind": "신설",
+  "site": "울산 석유화학 2단계(샤힌 프로젝트)",
+  "capacity": "단일 설비 기준 세계 최대 스팀크래커(TC2C 기술)·폴리머 설비, 석유화학 제품 연 약 320만t 추가(석유화학 비중 12%→25%)",
+  "amount": "9조2,580억원",
+  "status": "시운전",
+  "note": "2022.11 이사회 투자 승인. 2026년 상반기 건설 대부분 완료, 하반기 시운전, 2027년 상업 가동 목표. 자금: 산업시설자금 대출 1조원, 아람코 대주주 대여금 등",
+  "source": "DART 분기보고서(2026.09)",
+  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116000262"
+ },
+ {
+  "date": "2026-11-16",
+  "company": "soil",
+  "sector": "oil",
+  "kind": "신설",
+  "site": "울산 가스터빈 발전설비(GTG 프로젝트)",
+  "capacity": "폐열 활용 가스터빈 발전설비, 에너지 효율 향상·탄소 감축",
+  "amount": "2,630억원",
+  "status": "건설 중",
+  "note": "2024.11 이사회 승인, 2026년 12월 완공·2027년 4월 상업 가동 목표, 약 2,098억원 집행",
+  "source": "DART 분기보고서(2026.09)",
+  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116000262"
+ },
+ {
+  "date": "2026-11-12",
+  "company": "hanwha",
+  "sector": "solar",
+  "kind": "증설",
+  "site": "진천 셀 공장 TOPCon 라인(JC2 4·6·7라인)",
+  "capacity": "셀 TOPCon 공정 구축·신규 라인 증설",
+  "amount": "2,269.6억원",
+  "status": "완공 단계",
+  "note": "투자기간 2022.06~2026.11, 지출 2,080억원(환급금 약 82억원 포함)",
+  "source": "DART 분기보고서(2026.09)",
+  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261112000489"
+ },
+ {
+  "date": "2026-11-12",
+  "company": "hanwha",
+  "sector": "solar",
+  "kind": "신설",
+  "site": "페로브스카이트 탠덤 셀 양산 파일럿",
+  "capacity": "탠덤 공정 신규 라인",
+  "amount": "1,875.1억원",
+  "status": "건설 중",
+  "note": "투자기간 2023.04~2027.12, 지출 1,503.2억원",
+  "source": "DART 분기보고서(2026.09)",
+  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261112000489"
+ },
+ {
   "date": "2026-10-28",
   "company": "ls",
   "kind": "투자",
@@ -9,7 +61,8 @@
   "status": "발표",
   "note": "2030년까지 미국 생산시설 전반에 추가 투자(2025년 4월 배스트럽 캠퍼스 준공식 회장 발표). DART 분기보고서(2026.09)에는 공장별 금액 없이 2026년 전체 설비투자 계획 1,460억원(생산능력 확장 508억원)만 기재",
   "source": "The Korea Times",
-  "url": "https://www.koreatimes.co.kr/business/tech-science/20261028/power-equipment-makers-race-to-expand-us-capacity-amid-ai-boom"
+  "url": "https://www.koreatimes.co.kr/business/tech-science/20261028/power-equipment-makers-race-to-expand-us-capacity-amid-ai-boom",
+  "sector": "electric"
  },
  {
   "date": "2026-10-28",
@@ -21,7 +74,8 @@
   "status": "진행 중",
   "note": "종속회사 Hyosung HICO 공장 증설, 투자기간 2025.07~2028.06(기투자 $78.4M). 별도로 시험실 설비 등 $67.2M(2025.01~2026.12) 진행 중. 2025년 11월 회사 발표 금액은 $157M. 6월 Quanta Services와 초고압 차단기 현지 생산 합작",
   "source": "DART 분기보고서(2026.09)",
-  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001360"
+  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001360",
+  "sector": "electric"
  },
  {
   "date": "2026-10-28",
@@ -33,7 +87,8 @@
   "status": "건설 중",
   "note": "투자기간 2025.01~2027.12. 기투자 1,149.6억원(2026년 1~9월 724.4억원), 향후 2,702.5억원. 2025.01.20 공시 환율(1,455.8원/$) 기준. 착공 당시 회사 발표는 2억달러. 2027년 4월 완공 예정",
   "source": "DART 분기보고서(2026.09)",
-  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116001028"
+  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116001028",
+  "sector": "electric"
  },
  {
   "date": "2026-10-27",
@@ -45,7 +100,8 @@
   "status": "완공·11월 양산",
   "note": "투자기간 2025.02~2027.12, 기투자 1,108.1억원(2026년 1~9월 820.2억원). 2027년부터 연 2,000억원 이상 추가 매출 전망(3분기 컨퍼런스콜)",
   "source": "DART 분기보고서(2026.09)",
-  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116001028"
+  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116001028",
+  "sector": "electric"
  },
  {
   "date": "2026-10-27",
@@ -57,7 +113,21 @@
   "status": "발표",
   "note": "신규시설투자 공시(이사회 결의). 투자기간 2026.11~2029.06, 자기자본 대비 9.74%. AI 데이터센터 메가 프로젝트·배전기기 패키지 발주 대응",
   "source": "DART 신규시설투자 공시",
-  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261027800235"
+  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261027800235",
+  "sector": "electric"
+ },
+ {
+  "date": "2026-09-01",
+  "company": "hl",
+  "sector": "oil",
+  "kind": "감축",
+  "site": "대산 NCC(옛 롯데케미칼 대산)",
+  "capacity": "NCC 연 110만t 가동 중단(3년 내), 범용 설비 가동 축소",
+  "amount": "",
+  "status": "발표",
+  "note": "HD현대케미칼이 롯데대산석화를 흡수합병해 H&L어드밴스드 출범(정부 승인 사업재편 1호). 대주주가 1조2,000억원 추가 출자 추진",
+  "source": "스마트비즈",
+  "url": "https://www.smartbizn.com/news/articleView.html?idxno=152705"
  },
  {
   "date": "2026-06",
@@ -69,7 +139,8 @@
   "status": "착공",
   "note": "2026년 6월 말 착공, 2028~2029년 생산 개시 예정. 2025년 9월 발표한 美 제조 투자 10억달러의 핵심",
   "source": "Hitachi Energy 보도자료",
-  "url": "https://www.hitachienergy.com/us/en/news-and-events/press-releases/2026/06/hitachi-energy-breaks-ground-on-the-nation-s-largest-facility-for-the-production-of-large-power-transformers-in-south-boston-virginia"
+  "url": "https://www.hitachienergy.com/us/en/news-and-events/press-releases/2026/06/hitachi-energy-breaks-ground-on-the-nation-s-largest-facility-for-the-production-of-large-power-transformers-in-south-boston-virginia",
+  "sector": "electric"
  },
  {
   "date": "2026-03-06",
@@ -81,7 +152,8 @@
   "status": "착공",
   "note": "투자기간 2025.01~2027.12. 기투자 1,149.6억원(2026년 1~9월 724.4억원), 향후 2,702.5억원. 2025.01.20 공시 환율(1,455.8원/$) 기준. 착공식 당시 회사 발표는 2억달러",
   "source": "DART 분기보고서(2026.09)",
-  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116001028"
+  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261116001028",
+  "sector": "electric"
  },
  {
   "date": "2025-11-18",
@@ -93,6 +165,7 @@
   "status": "발표",
   "note": "종속회사 Hyosung HICO 공장 증설, 투자기간 2025.07~2028.06(기투자 $78.4M). 별도로 시험실 설비 등 $67.2M(2025.01~2026.12) 진행 중. 2025년 11월 회사 발표 금액은 $157M",
   "source": "DART 분기보고서(2026.09)",
-  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001360"
+  "url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20261113001360",
+  "sector": "electric"
  }
 ]
