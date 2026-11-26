@@ -140,6 +140,21 @@ details.briefs summary span{font-weight:500;color:var(--ink-2);font-size:13px}
 .subsw button{appearance:none;border:0;background:none;font:inherit;font-size:13.5px;font-weight:600;color:var(--ink-2);padding:6px 14px;border-radius:8px;cursor:pointer}
 .subsw button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 .kind{font-size:11.5px;font-weight:700;border-radius:5px;padding:1px 7px;white-space:nowrap;background:var(--mid-soft);color:var(--mid)}
+.stories{margin:2px 0 8px}
+.st-lbl{font-size:12.5px;font-weight:700;color:var(--ink-2);margin-bottom:8px}
+.st-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.st-card{appearance:none;text-align:left;font:inherit;color:inherit;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.st-card:hover{border-color:var(--accent)}
+.st-h{display:flex;justify-content:space-between;gap:8px;align-items:baseline} .st-h b{font-size:15px}
+.st-n{font-size:12px;color:var(--ink-2);white-space:nowrap}
+.st-s{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.st-f{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px}
+.st-i{font-weight:700;border-radius:5px;padding:1px 7px} .st-i.up{background:var(--hot-soft);color:var(--hot)} .st-i.down{background:var(--accent-soft);color:var(--accent)} .st-i.mixed{background:var(--mid-soft);color:var(--mid)}
+.st-u{color:var(--ink-2)}
+.storyhead{background:var(--surface);border:1px solid var(--accent);border-radius:14px;padding:14px 18px;margin-bottom:6px}
+.sh-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap} .sh-top b{font-size:17px} .sh-top .chip{margin-left:auto}
+.sh-k{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:5px;padding:1px 7px}
+.sh-st{margin:8px 0 0;font-size:15px;line-height:1.7} .sh-meta{margin:4px 0 0;font-size:12.5px;color:var(--ink-2)}
 footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
 @media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-template-areas:"top" "today" "tick" "side" "scope" "filters" "note" "feed" "foot"}
  .side{position:static;margin-bottom:12px;gap:12px}nav.tabs{flex-direction:row;overflow-x:auto;padding:6px}.cal li:nth-child(n+5){display:none}.tab{padding:8px 12px}.status{text-align:left}input#q{width:100%;margin-left:0}.src{margin-left:0;width:100%}article.card{padding:16px}}
@@ -198,14 +213,14 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
   const REGION = {KR:"한국", US:"미국", EU:"EU", GL:"글로벌", CN:"중국", JP:"일본", ME:"중동", IN:"인도"};
   const CAT_NAME = Object.fromEntries(TABS.map(t => [t.id, t.name]));
 
-  const state = {csec:"all", sub:"orders", capex:[], orders:[], coverage:[], tab:"all", type:"all", range:"7", imp:"all", q:"", items:[], loaded:false};
+  const state = {stories:[], story:"", csec:"all", sub:"orders", capex:[], orders:[], coverage:[], tab:"all", type:"all", range:"7", imp:"all", q:"", items:[], loaded:false};
   try { const s = JSON.parse(localStorage.getItem("eb-filters")||"{}"); Object.assign(state, {type:s.type||"all", range:s.range||"7", imp:s.imp||"all"}); } catch(e){}
   const save = () => { try { localStorage.setItem("eb-filters", JSON.stringify({type:state.type, range:state.range, imp:state.imp})); } catch(e){} };
 
   const $ = s => document.querySelector(s);
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 
-  function readHash(){ const h = location.hash.replace("#",""); state.tab = TABS.some(t => t.id === h) ? h : "all"; }
+  function readHash(){ const h = location.hash.replace("#",""); state.tab = TABS.some(t => t.id === h) ? h : "all"; state.story = ""; }
   readHash();
   window.addEventListener("hashchange", () => { readHash(); render(); });
 
@@ -226,9 +241,11 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
   const safeUrl = u => (typeof u === "string" && u.startsWith("https://")) ? u : null;
 
   function filtered(ignoreTab){
-    const from = state.range === "all" ? "" : daysAgo(state.range);
+    const story = ignoreTab ? "" : state.story;
+    const from = (state.range === "all" || story) ? "" : daysAgo(state.range);
     return state.items.filter(it =>
-      (ignoreTab || state.tab === "all" || it.category === state.tab) &&
+      (!story || (Array.isArray(it.stories) && it.stories.includes(story))) &&
+      (ignoreTab || story || state.tab === "all" || it.category === state.tab) &&
       (state.type === "all" || it.type === state.type) &&
       (state.imp === "all" || Number(it.importance) >= Number(state.imp)) &&
       (!from || (it.date||"") >= from) &&
@@ -393,6 +410,40 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     });
     t.appendChild(tb); wrap.appendChild(t); feed.appendChild(wrap);
   }
+  const IMPACT = {up:"▲ 유가 상승 요인", down:"▼ 유가 하락 요인", mixed:"↕ 변동성 요인"};
+  function storyStrip(feed){
+    const list = state.stories.filter(st => state.tab === "all" || st.category === state.tab);
+    if (!list.length) return;
+    if (state.story){
+      const st = state.stories.find(x => x.id === state.story);
+      if (st){
+        const box = el("div","storyhead");
+        const top = el("div","sh-top"); top.appendChild(el("span","sh-k","스토리 타임라인")); top.appendChild(el("b",null, st.name));
+        const x = el("button","chip","전체 이슈로 돌아가기"); x.type = "button"; x.addEventListener("click", () => { state.story = ""; render(); }); top.appendChild(x);
+        box.appendChild(top);
+        box.appendChild(el("p","sh-st", st.status || ""));
+        const meta = [st.updated ? "업데이트 " + st.updated : "", st.next ? "다음: " + st.next : ""].filter(Boolean).join(" · ");
+        if (meta) box.appendChild(el("p","sh-meta", meta));
+        feed.appendChild(box);
+        return;
+      }
+    }
+    const wrap = el("div","stories"); wrap.appendChild(el("div","st-lbl","이슈 흐름"));
+    const row = el("div","st-row");
+    list.forEach(st => {
+      const n = state.items.filter(i => Array.isArray(i.stories) && i.stories.includes(st.id)).length;
+      const c = el("button","st-card"); c.type = "button";
+      const h = el("div","st-h"); h.appendChild(el("b",null, st.name)); h.appendChild(el("span","st-n", n + "건")); c.appendChild(h);
+      c.appendChild(el("p","st-s", st.status || ""));
+      const f = el("div","st-f");
+      if (st.impact && IMPACT[st.impact]) f.appendChild(el("span","st-i " + st.impact, IMPACT[st.impact]));
+      if (st.updated) f.appendChild(el("span","st-u", st.updated));
+      c.appendChild(f);
+      c.addEventListener("click", () => { state.story = st.id; render(); window.scrollTo({top: $("#feed").getBoundingClientRect().top + window.scrollY - 80, behavior: "smooth"}); });
+      row.appendChild(c);
+    });
+    wrap.appendChild(row); feed.appendChild(wrap);
+  }
   function render(){
     renderTabs();
     const feed = $("#feed"); feed.textContent = "";
@@ -400,6 +451,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     $("#rangeGroup").hidden = false;
     if (state.tab === "own"){ ["typeGroup","impGroup"].forEach(id => $("#"+id).hidden = true); renderOwn(feed); return; }
     ["typeGroup","impGroup"].forEach(id => $("#"+id).hidden = false);
+    if (state.loaded) storyStrip(feed);
     if (!state.loaded){ feed.appendChild(el("div","empty","이슈를 불러오는 중입니다…")); return; }
     if (!state.items.length){ feed.appendChild(el("div","empty","아직 수집된 이슈가 없습니다. 정해진 갱신 시각에 새 이슈가 자동으로 추가됩니다.")); return; }
     const list = filtered(false).sort((x,y) => (y.date||"").localeCompare(x.date||"") || (Number(y.importance)||0)-(Number(x.importance)||0) || (y.addedAt||"").localeCompare(x.addedAt||""));
@@ -426,7 +478,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
   render();
 
   const DATA = document.documentElement.dataset;
-  const ISSUES_URL = DATA.issues || "data/issues.json", META_URL = DATA.meta || "data/meta.json", IND_URL = DATA.indicators || "data/indicators.json", CAL_URL = DATA.calendar || "data/calendar.json", TODAY_URL = DATA.today || "data/today.json", COV_URL = DATA.coverage || "data/coverage.json", ORD_URL = DATA.orders || "data/orders.json", CAPEX_URL = DATA.capex || "data/capex.json";
+  const ISSUES_URL = DATA.issues || "data/issues.json", META_URL = DATA.meta || "data/meta.json", IND_URL = DATA.indicators || "data/indicators.json", CAL_URL = DATA.calendar || "data/calendar.json", TODAY_URL = DATA.today || "data/today.json", COV_URL = DATA.coverage || "data/coverage.json", ORD_URL = DATA.orders || "data/orders.json", STORY_URL = DATA.stories || "data/stories.json", CAPEX_URL = DATA.capex || "data/capex.json";
   const KIND = {policy:"정책", macro:"거시", earn:"실적", kr:"국내", event:"행사"};
   function renderCal(list){
     const box = $("#cal"); box.textContent = "";
@@ -489,6 +541,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
       const v = "?t=" + Math.floor(Date.now()/60000);
       fetch(CAL_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(renderCal).catch(() => {});
       fetch(TODAY_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(renderToday).catch(() => {});
+      fetch(STORY_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(o => { state.stories = Array.isArray(o) ? o : []; render(); }).catch(() => {});
       fetch(CAPEX_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(o => { state.capex = Array.isArray(o) ? o : []; render(); }).catch(() => {});
       fetch(ORD_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(o => { state.orders = Array.isArray(o) ? o : []; render(); }).catch(() => {});
       fetch(COV_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(c => { state.coverage = Array.isArray(c) ? c : []; render(); }).catch(() => {});
