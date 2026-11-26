@@ -5,9 +5,9 @@
   "kind": "신설",
   "site": "美 앨라배마 2공장",
   "capacity": "초고압 변압기 생산능력 약 50% 확대, 765kV급 생산 가능",
-  "amount": "",
+  "amount": "$200M",
   "status": "건설 중",
-  "note": "2027년 4월 완공 예정",
+  "note": "2026년 3월 착공, 2027년 4월 완공 예정. 투자액은 착공 당시 회사 발표 기준(약 3,000억원)",
   "source": "The Korea Times",
   "url": "https://www.koreatimes.co.kr/business/tech-science/20261028/power-equipment-makers-race-to-expand-us-capacity-amid-ai-boom"
  },
@@ -19,7 +19,7 @@
   "capacity": "배스트롭을 생산·R&D·고객지원 통합 거점으로 육성",
   "amount": "$240M",
   "status": "발표",
-  "note": "2030년까지 미국 생산시설 전반에 투자",
+  "note": "2030년까지 미국 생산시설 전반에 추가 투자(2025년 4월 배스트럽 캠퍼스 준공식에서 회장 발표)",
   "source": "The Korea Times",
   "url": "https://www.koreatimes.co.kr/business/tech-science/20261028/power-equipment-makers-race-to-expand-us-capacity-amid-ai-boom"
  },
@@ -28,12 +28,12 @@
   "company": "hyosung",
   "kind": "증설",
   "site": "美 테네시 멤피스 변압기 공장",
-  "capacity": "변압기 생산능력 확대",
-  "amount": "$300M",
+  "capacity": "2028년까지 초고압 변압기 생산능력 50% 이상 확대",
+  "amount": "$157M",
   "status": "진행 중",
-  "note": "6월에는 Quanta Services와 합작으로 초고압 차단기 현지 생산 기반 확보(국내 전력기기 업체 최초)",
-  "source": "The Korea Times",
-  "url": "https://www.koreatimes.co.kr/business/tech-science/20261028/power-equipment-makers-race-to-expand-us-capacity-amid-ai-boom"
+  "note": "2025년 11월 회사 발표 기준(약 2,300억원). 2020년 인수 이후 세 차례 증설로 누적 투자 약 $300M. 6월 Quanta Services와 초고압 차단기 현지 생산 합작",
+  "source": "전자신문(회사 발표)",
+  "url": "https://www.etnews.com/20251118000161"
  },
  {
   "date": "2026-10-27",
@@ -43,8 +43,44 @@
   "capacity": "연 40~50대 추가(AI 데이터센터용·765kV 초고압 중심)",
   "amount": "",
   "status": "완공·11월 양산",
-  "note": "2027년부터 연 2,000억원 이상 추가 매출 전망(3분기 컨퍼런스콜)",
+  "note": "2027년부터 연 2,000억원 이상 추가 매출 전망(3분기 컨퍼런스콜). 투자액은 공식 자료에서 확인되지 않음",
   "source": "아이뉴스24",
   "url": "https://m.inews24.com/v/2019534"
+ },
+ {
+  "date": "2026-06",
+  "company": "hitachi",
+  "kind": "신설",
+  "site": "美 버지니아 사우스보스턴 대형 변압기 공장",
+  "capacity": "미국 최대 규모 대형 전력변압기 생산시설, 신규 고용 825명",
+  "amount": "$457M",
+  "status": "착공",
+  "note": "2026년 6월 말 착공, 2028~2029년 생산 개시 예정. 2025년 9월 발표한 美 제조 투자 10억달러의 핵심",
+  "source": "Hitachi Energy 보도자료",
+  "url": "https://www.hitachienergy.com/us/en/news-and-events/press-releases/2026/06/hitachi-energy-breaks-ground-on-the-nation-s-largest-facility-for-the-production-of-large-power-transformers-in-south-boston-virginia"
+ },
+ {
+  "date": "2026-03-06",
+  "company": "hde",
+  "kind": "신설",
+  "site": "美 앨라배마 2공장",
+  "capacity": "초고압 변압기 생산능력 50% 확대, 부지 2만9,000㎡",
+  "amount": "$200M",
+  "status": "착공",
+  "note": "몽고메리 북미 생산법인 부지 내 기공식, 765kV급 시험·생산 설비 포함",
+  "source": "네이트 뉴스(회사 발표)",
+  "url": "https://news.nate.com/view/20260308n04940"
+ },
+ {
+  "date": "2025-11-18",
+  "company": "hyosung",
+  "kind": "증설",
+  "site": "美 테네시 멤피스 변압기 공장",
+  "capacity": "2028년까지 초고압 변압기 생산능력 50% 이상 확대",
+  "amount": "$157M",
+  "status": "발표",
+  "note": "약 2,300억원. 인수 이후 누적 투자 약 $300M",
+  "source": "에너지경제(회사 발표)",
+  "url": "https://m.ekn.kr/view.php?key=20251118024568565"
  }
 ]
