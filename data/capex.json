@@ -1,0 +1,50 @@
+[
+ {
+  "date": "2026-10-28",
+  "company": "hde",
+  "kind": "신설",
+  "site": "美 앨라배마 2공장",
+  "capacity": "초고압 변압기 생산능력 약 50% 확대, 765kV급 생산 가능",
+  "amount": "",
+  "status": "건설 중",
+  "note": "2027년 4월 완공 예정",
+  "source": "The Korea Times",
+  "url": "https://www.koreatimes.co.kr/business/tech-science/20261028/power-equipment-makers-race-to-expand-us-capacity-amid-ai-boom"
+ },
+ {
+  "date": "2026-10-28",
+  "company": "ls",
+  "kind": "투자",
+  "site": "美 유타 배전반 공장 증설·텍사스 배스트롭 캠퍼스",
+  "capacity": "배스트롭을 생산·R&D·고객지원 통합 거점으로 육성",
+  "amount": "$240M",
+  "status": "발표",
+  "note": "2030년까지 미국 생산시설 전반에 투자",
+  "source": "The Korea Times",
+  "url": "https://www.koreatimes.co.kr/business/tech-science/20261028/power-equipment-makers-race-to-expand-us-capacity-amid-ai-boom"
+ },
+ {
+  "date": "2026-10-28",
+  "company": "hyosung",
+  "kind": "증설",
+  "site": "美 테네시 멤피스 변압기 공장",
+  "capacity": "변압기 생산능력 확대",
+  "amount": "$300M",
+  "status": "진행 중",
+  "note": "6월에는 Quanta Services와 합작으로 초고압 차단기 현지 생산 기반 확보(국내 전력기기 업체 최초)",
+  "source": "The Korea Times",
+  "url": "https://www.koreatimes.co.kr/business/tech-science/20261028/power-equipment-makers-race-to-expand-us-capacity-amid-ai-boom"
+ },
+ {
+  "date": "2026-10-27",
+  "company": "hde",
+  "kind": "증설",
+  "site": "울산 전력변압기 신공장",
+  "capacity": "연 40~50대 추가(AI 데이터센터용·765kV 초고압 중심)",
+  "amount": "",
+  "status": "완공·11월 양산",
+  "note": "2027년부터 연 2,000억원 이상 추가 매출 전망(3분기 컨퍼런스콜)",
+  "source": "아이뉴스24",
+  "url": "https://m.inews24.com/v/2019534"
+ }
+]

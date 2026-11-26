@@ -133,6 +133,13 @@ details.briefs summary span{font-weight:500;color:var(--ink-2);font-size:13px}
 .otable a{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
 .otable .tag{white-space:nowrap}
 .otable tr.own + tr.onote td{background:var(--accent-soft)}
+.navlbl{font-size:11.5px;font-weight:700;color:var(--ink-2);letter-spacing:.04em;padding:10px 12px 4px}
+.navlbl:first-child{padding-top:2px}
+@media (max-width:900px){.navlbl{display:none}}
+.subsw{display:inline-flex;gap:4px;background:var(--tag);border-radius:10px;padding:3px;margin-bottom:12px}
+.subsw button{appearance:none;border:0;background:none;font:inherit;font-size:13.5px;font-weight:600;color:var(--ink-2);padding:6px 14px;border-radius:8px;cursor:pointer}
+.subsw button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.kind{font-size:11.5px;font-weight:700;border-radius:5px;padding:1px 7px;white-space:nowrap;background:var(--mid-soft);color:var(--mid)}
 footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
 @media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-template-areas:"top" "today" "tick" "side" "scope" "filters" "note" "feed" "foot"}
  .side{position:static;margin-bottom:12px;gap:12px}nav.tabs{flex-direction:row;overflow-x:auto;padding:6px}.cal li:nth-child(n+5){display:none}.tab{padding:8px 12px}.status{text-align:left}input#q{width:100%;margin-left:0}.src{margin-left:0;width:100%}article.card{padding:16px}}
@@ -182,7 +189,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     {id:"solar", name:"에너지솔루션", scope:"HD현대에너지솔루션(태양광 셀·모듈)"},
     {id:"hydrogen", name:"하이드로젠", scope:"HD하이드로젠(수소연료전지·SOFC)"},
     {id:"own", name:"자사 보도", scope:"4개사(계열사 포함)가 직접 언급된 기사. 외신·해외 업계지 중심이며 국내는 주요 기사만 담습니다"},
-    {id:"orders", name:"수주 트래커", scope:"HD현대일렉트릭과 경쟁사(효성중공업·LS일렉트릭·Siemens Energy·GE Vernova·Hitachi Energy)의 주요 수주 누적"},
+    {id:"orders", name:"수주·증설", scope:"HD현대일렉트릭과 경쟁사(효성중공업·LS일렉트릭·Siemens Energy·GE Vernova·Hitachi Energy)의 수주와 생산능력 증설 누적"},
   ];
   const TYPES = {all:"전체", domestic:"국내기사", foreign:"외신", report:"리포트", policy:"정책"};
   const RANGES = {all:"전체", "1":"오늘", "3":"3일", "7":"7일", "30":"30일"};
@@ -191,7 +198,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
   const REGION = {KR:"한국", US:"미국", EU:"EU", GL:"글로벌", CN:"중국", JP:"일본", ME:"중동", IN:"인도"};
   const CAT_NAME = Object.fromEntries(TABS.map(t => [t.id, t.name]));
 
-  const state = {orders:[], coverage:[], tab:"all", type:"all", range:"7", imp:"all", q:"", items:[], loaded:false};
+  const state = {sub:"orders", capex:[], orders:[], coverage:[], tab:"all", type:"all", range:"7", imp:"all", q:"", items:[], loaded:false};
   try { const s = JSON.parse(localStorage.getItem("eb-filters")||"{}"); Object.assign(state, {type:s.type||"all", range:s.range||"7", imp:s.imp||"all"}); } catch(e){}
   const save = () => { try { localStorage.setItem("eb-filters", JSON.stringify({type:state.type, range:state.range, imp:state.imp})); } catch(e){} };
 
@@ -233,10 +240,12 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     const nav = $("#tabs"); nav.textContent = "";
     const base = filtered(true);
     TABS.forEach(t => {
+      if (t.id === "all") nav.appendChild(el("div", "navlbl", "이슈"));
+      if (t.id === "own") nav.appendChild(el("div", "navlbl", "모니터링·트래커"));
       const b = el("button", "tab"); b.type = "button"; b.setAttribute("role","tab");
       b.setAttribute("aria-selected", String(state.tab === t.id));
       b.appendChild(el("span", null, t.name));
-      const n = t.id === "orders" ? state.orders.length : t.id === "own" ? covFiltered().length : t.id === "all" ? base.length : base.filter(i => i.category === t.id).length;
+      const n = t.id === "orders" ? state.orders.length + state.capex.length : t.id === "own" ? covFiltered().length : t.id === "all" ? base.length : base.filter(i => i.category === t.id).length;
       b.appendChild(el("span", "n", String(n)));
       b.addEventListener("click", () => { location.hash = t.id; });
       nav.appendChild(b);
@@ -324,7 +333,38 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
     });
   }
   const OCO = {hde:"HD현대일렉트릭", hyosung:"효성중공업", ls:"LS일렉트릭", siemens:"Siemens Energy", gev:"GE Vernova", hitachi:"Hitachi Energy"};
+  function subSwitch(feed){
+    const sw = el("div","subsw");
+    [["orders","수주 "+state.orders.length],["capex","증설 "+state.capex.length]].forEach(([k,label]) => {
+      const b = el("button", null, label); b.type = "button"; b.setAttribute("aria-pressed", String(state.sub === k));
+      b.addEventListener("click", () => { state.sub = k; render(); }); sw.appendChild(b);
+    });
+    feed.appendChild(sw);
+  }
+  function renderCapex(feed){
+    const list = state.capex.filter(o => !state.q || [o.site, o.capacity, o.note, OCO[o.company]].join(" ").toLowerCase().includes(state.q)).sort((a,b) => (b.date||"").localeCompare(a.date||""));
+    feed.appendChild(el("p", "covnote", "생산능력 증설·신설·현지화 투자를 발표·착공·완공 시점별로 담습니다. 금액은 발표 기준입니다."));
+    if (!list.length){ feed.appendChild(el("div","empty","등록된 증설 소식이 없습니다.")); return; }
+    const wrap = el("div","otable"); const t = el("table");
+    const hr = el("tr"); ["날짜","회사","구분","지역·공장","규모·내용","투자액",""].forEach(x => hr.appendChild(el("th", null, x))); const th = el("thead"); th.appendChild(hr); t.appendChild(th);
+    const tb = el("tbody");
+    list.forEach(o => {
+      const tr = el("tr", o.company === "hde" ? "own" : "");
+      tr.appendChild(el("td","od", (o.date||"").replace(/-/g,".")));
+      const c = el("td"); c.appendChild(el("span","tag co", OCO[o.company] || o.company)); tr.appendChild(c);
+      const k = el("td"); k.appendChild(el("span","kind", o.kind || "증설")); tr.appendChild(k);
+      tr.appendChild(el("td", null, o.site || ""));
+      tr.appendChild(el("td", null, o.capacity || ""));
+      tr.appendChild(el("td","oa", o.amount || "–"));
+      const l = el("td"); const u = safeUrl(o.url); if (u){ const a = el("a", null, "출처 ↗"); a.href = u; a.target = "_blank"; a.rel = "noopener noreferrer"; l.appendChild(a); } tr.appendChild(l);
+      tb.appendChild(tr);
+      if (o.note){ const nr = el("tr","onote"); const td = el("td"); td.colSpan = 7; td.textContent = o.note; nr.appendChild(td); tb.appendChild(nr); }
+    });
+    t.appendChild(tb); wrap.appendChild(t); feed.appendChild(wrap);
+  }
   function renderOrders(feed){
+    subSwitch(feed);
+    if (state.sub === "capex"){ renderCapex(feed); return; }
     const list = state.orders.filter(o => !state.q || [o.client, o.product, o.note, OCO[o.company]].join(" ").toLowerCase().includes(state.q)).sort((a,b) => (b.date||"").localeCompare(a.date||""));
     feed.appendChild(el("p", "covnote", "공시·보도로 확인된 수주만 담습니다. 금액은 공시 또는 보도 기준이며, 비공개 계약은 '비공개'로 표시합니다."));
     if (!list.length){ feed.appendChild(el("div","empty","등록된 수주가 없습니다.")); return; }
@@ -377,7 +417,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
   render();
 
   const DATA = document.documentElement.dataset;
-  const ISSUES_URL = DATA.issues || "data/issues.json", META_URL = DATA.meta || "data/meta.json", IND_URL = DATA.indicators || "data/indicators.json", CAL_URL = DATA.calendar || "data/calendar.json", TODAY_URL = DATA.today || "data/today.json", COV_URL = DATA.coverage || "data/coverage.json", ORD_URL = DATA.orders || "data/orders.json";
+  const ISSUES_URL = DATA.issues || "data/issues.json", META_URL = DATA.meta || "data/meta.json", IND_URL = DATA.indicators || "data/indicators.json", CAL_URL = DATA.calendar || "data/calendar.json", TODAY_URL = DATA.today || "data/today.json", COV_URL = DATA.coverage || "data/coverage.json", ORD_URL = DATA.orders || "data/orders.json", CAPEX_URL = DATA.capex || "data/capex.json";
   const KIND = {policy:"정책", macro:"거시", earn:"실적", kr:"국내", event:"행사"};
   function renderCal(list){
     const box = $("#cal"); box.textContent = "";
@@ -440,6 +480,7 @@ footer{margin-top:36px;font-size:12.5px;color:var(--ink-2)}
       const v = "?t=" + Math.floor(Date.now()/60000);
       fetch(CAL_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(renderCal).catch(() => {});
       fetch(TODAY_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(renderToday).catch(() => {});
+      fetch(CAPEX_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(o => { state.capex = Array.isArray(o) ? o : []; render(); }).catch(() => {});
       fetch(ORD_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(o => { state.orders = Array.isArray(o) ? o : []; render(); }).catch(() => {});
       fetch(COV_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(c => { state.coverage = Array.isArray(c) ? c : []; render(); }).catch(() => {});
       fetch(IND_URL+v, {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(renderTicker).catch(() => {});

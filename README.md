@@ -46,3 +46,6 @@ HD현대 에너지부문 4개사(오일뱅크·H&L어드밴스드, 일렉트릭,
 `[{date, company: hde|hyosung|ls|siemens|gev|hitachi, client, region, product, amount, note, source, url}]`
 
 자사 보도 항목에는 `intl`(해외 매체 여부, true/false)을 함께 씁니다.
+
+## 증설 트래커 (`data/capex.json`)
+`[{date, company, kind: 증설|신설|투자|감축, site, capacity, amount, status, note, source, url}]`
