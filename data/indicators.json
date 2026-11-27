@@ -1,14 +1,14 @@
 {
- "asOf": "2026-11-27 07:55 (KST)",
+ "asOf": "2026-11-27 10:55 (KST)",
  "items": [
   {
    "group": "공통",
    "label": "원/달러",
-   "value": "1,343.0",
+   "value": "1,341.9",
    "unit": "원",
-   "change": "1.1원",
+   "change": "1.2원",
    "dir": "down",
-   "asOf": "11/27 07:40",
+   "asOf": "11/27 10:40",
    "source": "Yahoo Finance"
   },
   {
@@ -54,21 +54,21 @@
   {
    "group": "정유·화학",
    "label": "브렌트",
-   "value": "91.73",
+   "value": "92.17",
    "unit": "$/bbl",
-   "change": "1.2%",
+   "change": "1.7%",
    "dir": "up",
-   "asOf": "11/26",
+   "asOf": "11/27 10:30",
    "source": "ICE(Yahoo Finance)"
   },
   {
    "group": "정유·화학",
    "label": "WTI",
-   "value": "84.91",
+   "value": "85.40",
    "unit": "$/bbl",
-   "change": "1.5%",
+   "change": "2.1%",
    "dir": "up",
-   "asOf": "11/26",
+   "asOf": "11/27 10:30",
    "source": "NYMEX(Yahoo Finance)"
   },
   {
