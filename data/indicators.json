@@ -1,5 +1,5 @@
 {
- "asOf": "2026-11-27 10:55 (KST)",
+ "asOf": "2026-11-27 14:55 (KST)",
  "items": [
   {
    "group": "공통",
@@ -54,12 +54,12 @@
   {
    "group": "정유·화학",
    "label": "브렌트",
-   "value": "92.17",
+   "value": "96.57",
    "unit": "$/bbl",
-   "change": "1.7%",
+   "change": "1.96",
    "dir": "up",
-   "asOf": "11/27 10:30",
-   "source": "ICE(Yahoo Finance)"
+   "asOf": "11/26",
+   "source": "한국석유공사"
   },
   {
    "group": "정유·화학",
@@ -74,41 +74,41 @@
   {
    "group": "정유·화학",
    "label": "두바이",
-   "value": "84.19",
+   "value": "87.00",
    "unit": "$/bbl",
-   "change": "1.9%",
+   "change": "2.81",
    "dir": "up",
-   "asOf": "11/25",
+   "asOf": "11/26",
    "source": "한국석유공사(오피넷)"
   },
   {
    "group": "정유·화학",
    "label": "싱가포르 정제마진(추정)",
-   "value": "20.40",
+   "value": "20.38",
    "unit": "$/bbl",
-   "change": "2.61",
+   "change": "0.02",
    "dir": "down",
-   "asOf": "11/25",
+   "asOf": "11/26",
    "source": "페트로넷·오피넷 자체 계산"
   },
   {
    "group": "정유·화학",
    "label": "경유 크랙",
-   "value": "47.94",
+   "value": "48.82",
    "unit": "$/bbl",
-   "change": "3.63",
-   "dir": "down",
-   "asOf": "11/25",
+   "change": "0.88",
+   "dir": "up",
+   "asOf": "11/26",
    "source": "페트로넷·오피넷 자체 계산"
   },
   {
    "group": "정유·화학",
    "label": "휘발유 크랙",
-   "value": "4.12",
+   "value": "1.54",
    "unit": "$/bbl",
-   "change": "2.34",
+   "change": "2.58",
    "dir": "down",
-   "asOf": "11/25",
+   "asOf": "11/26",
    "source": "페트로넷·오피넷 자체 계산"
   },
   {
